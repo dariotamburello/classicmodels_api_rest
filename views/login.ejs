@@ -30,8 +30,7 @@
             fetch('/auth/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json; charset=utf-8',
-                    'Accept': 'application/json'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({username, password})
             }).then(res => {
