@@ -1,4 +1,4 @@
-// process.loadEnvFile()
+if (process.env.ENV !== 'PRD') process.loadEnvFile()
 
 export const configuration = {
   host: process.env.DBHOST ?? 'localhost',
