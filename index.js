@@ -37,7 +37,7 @@ import { DashboardController } from './controllers/dashboard.js'
 import { errorHandler } from './middleware/errorHandler.js'
 import { checkToken } from './middleware/auth.js'
 
-process.loadEnvFile()
+// process.loadEnvFile()
 
 const port = process.env.APPPORT ?? 3000
 
