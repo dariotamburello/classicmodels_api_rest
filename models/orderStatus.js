@@ -8,7 +8,7 @@ export class OrderStatusModel {
   static async getAll () {
     try {
       const [orderStatus] = await connection.query(
-        'SELECT * FROM orderStatus;'
+        'SELECT * FROM orderstatus;'
       )
       if (orderStatus.length === 0) return []
       return orderStatus
@@ -20,7 +20,7 @@ export class OrderStatusModel {
   static async getById ({ id }) {
     try {
       const orderStatus = await connection.query(
-        'SELECT * FROM orderStatus WHERE id = ?;',
+        'SELECT * FROM orderstatus WHERE id = ?;',
         [id]
       )
       if (!orderStatus) return []
@@ -38,7 +38,7 @@ export class OrderStatusModel {
       } = input
 
       const result = await connection.query(
-        `INSERT INTO orderStatus (
+        `INSERT INTO orderstatus (
             title,
             description
         ) VALUES (?, ?);`,
@@ -57,7 +57,7 @@ export class OrderStatusModel {
   static async delete (id) {
     try {
       const result = await connection.query(
-        'DELETE FROM orderStatus WHERE id = ?;',
+        'DELETE FROM orderstatus WHERE id = ?;',
         [id]
       )
       if (result[0].affectedRows === 0) return false
@@ -78,7 +78,7 @@ export class OrderStatusModel {
       }
 
       await connection.query(
-        `UPDATE orderStatus
+        `UPDATE orderstatus
         SET title = ?,
             description = ?
         WHERE id = ?;`,

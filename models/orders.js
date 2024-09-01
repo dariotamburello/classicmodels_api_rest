@@ -153,7 +153,7 @@ export class OrderModel {
         JOIN customers c ON o.customerNumber = c.customerNumber
         JOIN orderstatus os ON o.status = os.id
         JOIN payments p ON o.paymentCheckNumber = p.checkNumber
-        JOIN paymentMethods pm ON p.paymentMethod = pm.id;`
+        JOIN paymentmethods pm ON p.paymentMethod = pm.id;`
       )
       if (orders.length === 0) return []
       if (customerNumber) return orders.filter(e => (e.customerNumber === +customerNumber))

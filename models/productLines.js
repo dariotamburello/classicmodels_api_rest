@@ -8,7 +8,7 @@ export class ProductLineModel {
   static async getAll () {
     try {
       const [productLines] = await connection.query(
-        'SELECT * FROM productLines;'
+        'SELECT * FROM productlines;'
       )
       if (productLines.length === 0) return []
       return productLines
@@ -20,7 +20,7 @@ export class ProductLineModel {
   static async getById ({ id }) {
     try {
       const productLine = await connection.query(
-        'SELECT * FROM productLines WHERE id = ?;',
+        'SELECT * FROM productlines WHERE id = ?;',
         [id]
       )
       if (!productLine) return []
@@ -42,7 +42,7 @@ export class ProductLineModel {
       if (existProductLine.length > 0) return false
 
       await connection.query(
-        `INSERT INTO productLines (id, title, description)
+        `INSERT INTO productlines (id, title, description)
         VALUES (?, ?, ?);`,
         [id, title, description]
       )
@@ -55,7 +55,7 @@ export class ProductLineModel {
   static async delete (id) {
     try {
       const result = await connection.query(
-        'DELETE FROM productLines WHERE id = ?;',
+        'DELETE FROM productlines WHERE id = ?;',
         [id]
       )
       if (result[0].affectedRows === 0) return false
@@ -76,7 +76,7 @@ export class ProductLineModel {
       }
 
       await connection.query(
-        `UPDATE productLines 
+        `UPDATE productlines 
         SET title = ?, description = ?
         WHERE id = ? ;`,
         [

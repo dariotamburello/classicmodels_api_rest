@@ -7,7 +7,7 @@ export class PaymentMethodsModel {
   static async getAll () {
     try {
       const [paymentMethods] = await connection.query(
-        'SELECT * FROM paymentMethods;'
+        'SELECT * FROM paymentmethods;'
       )
       if (paymentMethods.length === 0) return []
       return paymentMethods
