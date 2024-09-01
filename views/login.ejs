@@ -17,7 +17,7 @@
     </div>
 
     <script type="module">
-        //import Notiflix from '/js/libs/notiflix.js'
+        import Notiflix from '/js/libs/notiflix.js'
         const $ = el => document.querySelector(el)
 
         const loginForm = $('#login-form')
@@ -41,14 +41,14 @@
         const helpers = {
             validateResponse: function(response) {
                 if(response.ok){
-                    //Notiflix.Loading.standard('Logging in...')
+                    Notiflix.Loading.standard('Logging in...')
                     setInterval(() => {
-                        //Notiflix.Loading.remove()
+                        Notiflix.Loading.remove()
                         window.location.href = '/dashboard'
                     }, 2000)
                 } else {
                     response.json().then(errorData => {
-                        //Notiflix.Notify.failure(errorData.error.errorTitle || 'An error occurred')
+                        Notiflix.Notify.failure(errorData.error.errorTitle || 'An error occurred')
                     })
                 }
             }
