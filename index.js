@@ -63,7 +63,7 @@ app.get('/', checkToken, (req, res) => {
     if (user) dashboardController.dashboard(req, res)
     else res.render('login', { layout: './layouts/empty' })
   } catch (error) {
-    console.log(error)
+    throw new Error(error)
   }
 })
 
@@ -73,7 +73,7 @@ app.get('/login', checkToken, (req, res) => {
     if (user) dashboardController.dashboard(req, res)
     else res.render('login', { layout: './layouts/empty' })
   } catch (error) {
-    console.log(error)
+    throw new Error(error)
   }
 })
 
