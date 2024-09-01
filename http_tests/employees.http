@@ -1,0 +1,44 @@
+@adminToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZkYzdmMGJiLTcwNzktNDk3Zi05ZTJmLThkNDRiZWZjNGJkMyIsInVzZXJuYW1lIjoiZHRhbWJ1cmVsbG8iLCJpYXQiOjE3MjMzODcwNTMsImV4cCI6MTcyMzM5MDY1M30.I8cy4R2RH0d065ZQdBaVOaIMI6uQHe8bXk1HVIr0coo
+@userToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY3NmZhNWJkLTNkYmEtNDBlYS05MjE5LTI0NmQzNjE0ZDNiMiIsInVzZXJuYW1lIjoibWlkdWRldiIsImlhdCI6MTcyMzM4NzA3NCwiZXhwIjoxNzIzMzkwNjc0fQ.mSfHfGUHRGs27n9A3uOfWnSc58odtlEmLgPjhrB_ZR0
+@admin=access_token={{adminToken}}
+@user=access_token={{userToken}}
+
+### GET all employees 
+GET http://localhost:3000/employees
+Cookie: {{admin}}
+
+### GET employees by officeCode
+GET http://localhost:3000/employees?officeCode=9
+Cookie: {{user}}
+
+### GET employees by id
+GET http://localhost:3000/employees/1709
+Cookie: {{user}}
+
+### CREATE new employees
+POST http://localhost:3000/employees
+Cookie: {{admin}}
+Content-Type: application/json
+
+{
+    "lastName": "Dario",
+    "firstName": "Tamburello",
+    "extension": "x100",
+    "email": "dario@eling.com.ar",
+    "officeCode": 9,
+    //"reportsTo": 1002,
+    "jobTitle": "Sales Rep"
+}
+
+### Delete a employee
+DELETE http://localhost:3000/employees/1715
+Cookie: {{admin}}
+
+### Update a employee
+PATCH http://localhost:3000/employees/1715
+Cookie: {{user}}
+Content-Type: application/json
+
+{
+    "officeCode": 9
+}

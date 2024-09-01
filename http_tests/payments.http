@@ -1,0 +1,29 @@
+### GET all payments
+GET http://localhost:3000/payments
+
+### GET payment by checkNumber
+GET http://localhost:3000/payments/MN89921
+
+### GET payments by customerNumber
+GET http://localhost:3000/payments?customerNumber=496
+
+### CREATE new payment
+POST http://localhost:3000/payments
+Content-Type: application/json
+
+{
+    "customerNumber": 496,
+    "amount": 52166.00,
+    "status": "In process"
+}
+
+### Delete a payment 
+DELETE http://localhost:3000/payments/UL247913
+
+### Update a payment
+PATCH http://localhost:3000/payments/VY898633
+Content-Type: application/json
+
+{
+    "status": "Cancelled"
+}

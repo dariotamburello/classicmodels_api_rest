@@ -1,0 +1,43 @@
+@adminToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZkYzdmMGJiLTcwNzktNDk3Zi05ZTJmLThkNDRiZWZjNGJkMyIsInVzZXJuYW1lIjoiZHRhbWJ1cmVsbG8iLCJpYXQiOjE3MjMyMzIwODksImV4cCI6MTcyMzIzNTY4OX0.SDSDHOUi4aSmRh4o4jrO99avO9ELRZSLEdR66IaDBwo
+@userToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY3NmZhNWJkLTNkYmEtNDBlYS05MjE5LTI0NmQzNjE0ZDNiMiIsInVzZXJuYW1lIjoibWlkdWRldiIsImlhdCI6MTcyMzIxNzI4NywiZXhwIjoxNzIzMjIwODg3fQ.nZWgX31IkZpmaDTCYMm7RgLm_WSjcsYvO4LeyKYWe-g
+@admin=access_token={{adminToken}}
+@user=access_token={{userToken}}
+
+### Recuperar todas los product
+GET http://localhost:3000/products
+
+### Recuperar products por product line
+GET http://localhost:3000/products?productLine=Planes
+
+### Recuperar product por id
+GET http://localhost:3000/products/S18_1662
+
+### Guardar un nuevo product
+POST http://localhost:3000/products
+Cookie: {{admin}}
+Content-Type: application/json
+
+{
+  "productCode": "S10_4758",
+  "productName": "Seiya Armadura Pegaso Divina",
+  "productLine": "Figuras",
+  "productScale": "1:90",
+  "productVendor": "Bandai",
+  "productDescription": "Figura de Seiya armadura Divina de Pegaso linea mith Exclamation",
+  "quantityInStock": 500,
+  "buyPrice": 95.00,
+  "MSRP": 130.90
+}
+
+### Borrar un product
+DELETE http://localhost:3000/products/S10_4758
+Cookie: {{admin}}
+
+### Update a product line
+PATCH http://localhost:3000/products/S10_4758
+Cookie: {{admin}}
+Content-Type: application/json
+
+{
+    "productName": "Seiya Armadura dorada de Sagitario"
+}

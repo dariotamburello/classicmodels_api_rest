@@ -1,0 +1,77 @@
+<% 
+    const rows = dataInTable.tableRows
+%>
+
+<div class="table-actions">
+    <div class="searchInTable">
+        <div class="search-box">
+            <% if (searcher) {%>
+                <input type="text" id="search-inTable" placeholder="Search...">
+                <i id="button-search-inTable" class='bx bx-search' ></i>
+            <% } %>
+        </div>
+    </div>
+    <div class="pagination">
+        <% if (pagination.prevPage > 0) {%>
+            <button id="prevButton" class="button-small pure-button" value="<%= pagination.prevPage %>">PREV</button>
+        <% } %>
+        <% if (pagination.currentPage > 0) {%>
+            <div class="current"><%= pagination.currentPage %></div>
+        <% } %>
+        <% if (pagination.nextPage > 0) {%>
+            <button id="nextButton" class="button-small pure-button" value="<%= pagination.nextPage %>">NEXT</button>
+        <% } %>
+    </div>
+</div>
+<table class="pure-table">
+    <thead>
+        <tr>
+            <th></th>
+            <% 
+            for (let i=0; i<titles.length; i++) {%>
+                <th><%= titles[i] %></th>
+            <% } %>
+        </tr>
+    </thead>
+    <tbody>
+        
+        <% for(let i=0; i<rows.length; i++) {%>
+            <tr>
+                <td>
+                    <i class='action_edit bx bxs-edit' data="<%= rows[i].id %>"></i>
+                    <i class='action_view bx bx-minus-front' data="<%= rows[i].id %>"></i>
+                </td>
+                <% for (let key in rows[i]) {
+                    if (key !== 'id') { %>
+                        <td>
+                            <%= rows[i][key] %>
+                        </td>
+                    <% } 
+                } %>
+            </tr>
+        <% } %>
+        
+    </tbody>
+</table>
+
+<script>
+    const $searchInput = document.querySelector('#search-inTable')
+    const prevButton = document.querySelector('#prevButton')
+    const nextButton = document.querySelector('#nextButton')
+    const buttonsGoToPage = [prevButton, nextButton]
+
+    const url = new URL(window.location.href)
+    const params = new URLSearchParams(url.search)
+    const valueSearch = params.get('search')
+    if (valueSearch) $searchInput.value = valueSearch
+
+    buttonsGoToPage.map((button) => {
+        if (!button) return
+        button.addEventListener("click", function() {
+            const page = button.getAttribute('value')
+            params.set('page', page)
+            if (url.search) url.search = params.toString()
+            window.location.href = url.toString()
+        })
+    })
+</script>

@@ -1,0 +1,31 @@
+<div id="popup-create" class="popup" style="display: none; width: 80%;" data="">
+    <div class="popup-content">
+        <header>
+            <h3>Add new element:</h3>
+        </header>
+        <span id="close-create-popup" class="close-popup">&times;</span>
+        <form id="form-create" class="pure-form pure-form-aligned">
+            <fieldset>
+                <div id="create-fields" class="pure-g"></div>
+            </fieldset>
+            <button id="saveNew" class="pure-button pure-button-primary">Save</button>
+            <button class="pure-button cancel-create-popup">Exit</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const popupCreate = document.querySelector("#popup-create")
+    const closeCreatePopUp = document.getElementById("close-create-popup")
+    const exitCreatePopUp = document.querySelector(".cancel-create-popup")
+    const overlayFromCreate = document.getElementById("overlay-1")
+    const elementsToCloseCreatePopup = [closeCreatePopUp, overlayFromCreate, exitCreatePopUp]
+    
+    elementsToCloseCreatePopup.forEach(function(element) {
+        element.addEventListener("click", function(e) {
+            e.preventDefault()
+            helpers.closePopUp(popupCreate, overlayFromCreate)
+        })
+    })
+
+</script>

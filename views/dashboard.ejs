@@ -1,0 +1,70 @@
+<% 
+%>
+
+<div class="home-content">
+    <div class="overview-boxes">
+        <div class="box">
+            <div class="right-side">
+            <div class="box-topic">Total Order</div>
+            <div class="number"><%= data.orderCount %></div>
+            <div class="indicator">
+                <i class='bx bx-up-arrow-alt'></i>
+                <span class="text">From this month</span>
+            </div>
+            </div>
+            <i class='bx bx-cart-alt cart'></i>
+        </div>
+        <div class="box">
+            <div class="right-side">
+            <div class="box-topic">Total Sales</div>
+            <div class="number"><%= data.totalAmount %></div>
+            <div class="indicator">
+                <i class='bx bx-up-arrow-alt'></i>
+                <span class="text">From this month</span>
+            </div>
+            </div>
+            <i class='bx bxs-cart-add cart two' ></i>
+        </div>
+        <div class="box">
+            <div class="right-side">
+            <div class="box-topic">Opened orders</div>
+            <div class="number"><%= data.noPickUpDateCount %></div>
+            <div class="indicator">
+                <i class='bx bx-up-arrow-alt'></i>
+                <span class="text">Always</span>
+            </div>
+            </div>
+            <i class='bx bx-cart cart three' ></i>
+        </div>
+        <div class="box">
+            <div class="right-side">
+            <div class="box-topic">Disputed orders</div>
+            <div class="number"><%= data.disputedOrders %></div>
+            <div class="indicator">
+                <i class='bx bx-down-arrow-alt down'></i>
+                <span class="text">Allways</span>
+            </div>
+            </div>
+            <i class='bx bxs-cart-download cart four' ></i>
+        </div>
+    </div>
+
+    <div class="sales-boxes">
+        <div class="recent-sales box">
+            <div class="title">Recent sales</div>
+            <div class="sales-details">
+                <%- include('./components/tables', { titles: data.lastOrdersTitles, rows: data.lastOrdersRows }); -%>
+                <div class="button">
+                    <a href="/dashboard/orders?page=1">See All</a>
+                </div>
+            </div>
+        </div>
+        <div class="top-sales box">
+            <div class="title">Top selling products</div>
+            <div class="top-sales-details">
+                <%- include('./components/tables', { titles: null, rows: data.topSellingProducts }); -%>
+            </div>
+        </div>
+    </div>
+</div>
+

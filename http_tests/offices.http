@@ -1,0 +1,39 @@
+@adminToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZkYzdmMGJiLTcwNzktNDk3Zi05ZTJmLThkNDRiZWZjNGJkMyIsInVzZXJuYW1lIjoiZHRhbWJ1cmVsbG8iLCJpYXQiOjE3MjMzOTA2ODQsImV4cCI6MTcyMzM5NDI4NH0.GfZAazvN96ysXOHn4KH1NOjt9cuAkzua58FE2RVvYo4
+@userToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY3NmZhNWJkLTNkYmEtNDBlYS05MjE5LTI0NmQzNjE0ZDNiMiIsInVzZXJuYW1lIjoibWlkdWRldiIsImlhdCI6MTcyMzM4NzA3NCwiZXhwIjoxNzIzMzkwNjc0fQ.mSfHfGUHRGs27n9A3uOfWnSc58odtlEmLgPjhrB_ZR0
+@admin=access_token={{adminToken}}
+@user=access_token={{userToken}}
+
+### GET all offices 
+GET http://localhost:3000/offices
+
+### GET office by id
+GET http://localhost:3000/offices/9
+
+### CREATE new office
+POST http://localhost:3000/offices
+Cookie: {{admin}}
+Content-Type: application/json
+
+{
+    "city": "Argentina",
+    "phone": "+54 351 5263100",
+    "addressLine1": "Av Voz del Interior 4015",
+    "addressLine2": null,
+    "state": "Cordoba",
+    "country": "Argentina",
+    "postalCode": "5099",
+    "territory": "Argentina"
+}
+
+### Delete a office
+DELETE http://localhost:3000/offices/10
+Cookie: {{admin}}
+
+### Update a office
+PATCH http://localhost:3000/offices/10
+Cookie: {{user}}
+Content-Type: application/json
+
+{
+    "city": "Cordoba"
+}

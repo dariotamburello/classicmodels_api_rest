@@ -1,0 +1,246 @@
+<% 
+    const dataInTable = data.dataInTable
+    const titles = data.dictionary.tableTitles
+    const modelForm = data.dictionary.modelForm
+    const searcher = data.searcher
+    const pagination = data.pagination
+    const entityName = data.dictionary.entityName
+    const stringURL = data.dictionary.stringURL
+%>
+
+<div class="home-content">
+    <section class="content" id="products">
+        <div class="header">
+            <div class="title">All <%= entityName %></div>
+            <button id="create-new-order" class="pure-button pure-button-primary">New <%= entityName %></button>
+        </div>
+        <div class="bodyTable">
+            <%- include('./components/tables_with_actions', { titles, dataInTable, searcher, pagination }); -%>
+        </div>
+    </section>
+</div>
+
+<div id="overlay-1" class="overlay"></div>
+<%- include('./components/popup-edit'); -%>
+<%- include('./components/popup-view'); -%>
+<%- include('./components/popup-create'); -%>
+<div id="overlay-2" class="overlay"></div>
+<%- include('./components/popup-select'); -%>
+
+<script type="module">
+    import Notiflix from '/js/libs/notiflix.js'
+    import { commonHelpers, commonModifyDOM, formatDateToInput, commonActions } from '/js/helpers/commonFunctions.js'
+    const formModel = <%- JSON.stringify(modelForm) %>
+
+    window.addEventListener('load', function () {
+        const overlay1 = document.querySelector('#overlay-1')
+        const overlay2 = document.querySelector('#overlay-2')
+
+        const $inputSeach = document.querySelector('#search-inTable')
+        const $buttonSearch = document.querySelector('#button-search-inTable')
+
+        // popup create
+        const buttonCreateNew = document.querySelector('#create-new-order')
+        const popupCreate = document.querySelector("#popup-create")
+        const sectionForInputs = document.querySelector("#create-fields")
+        const formNew = document.querySelector("#form-create")
+        const buttonSaveNew = document.querySelector('#saveNew')
+
+        // popup view
+        const viewButtons = document.querySelectorAll(".action_view")
+        const popupView = document.querySelector("#popup-view")
+        const viewFields = document.querySelector("#view-fields")
+        const viewDetails = document.querySelector('#view-details')
+        const viewImage = document.querySelector('#view-image')
+
+        // popup edit
+        const editButtons = document.querySelectorAll(".action_edit")
+        const editForm = document.querySelector(".pure-form")
+        const popupEdit = document.querySelector("#popup-edit")
+        const saveChanges = document.querySelector("#saveChanges")
+        const deleteButton = document.querySelector('#deleteButton')
+
+        const editPopupSelectedTab = document.querySelector("#tab-hidden-field")
+        const editTabs = document.querySelector("#edit-tabs-area")
+        const editFieldsInput = document.querySelector("#edit-fields-input")
+
+        // popup select
+        const popupSelect = document.querySelector("#popup-select")
+        const closePopupSelect = document.querySelector('#close-select-popup')
+        const selectItem = document.querySelector('#selectItem')
+        const tableBodySelect = document.querySelector('#table-body-select')
+
+        // LISTENERS
+        buttonCreateNew.addEventListener("click", async function() {
+            commonHelpers.openPopUp(popupCreate, overlay1)
+            sectionForInputs.innerHTML = ''
+            const htmlPromises = await commonModifyDOM.createAllInputs(formModel, true)
+            const resolvedHtml = await Promise.all(htmlPromises)
+            resolvedHtml.forEach(htmlElement => {
+                if (htmlElement) sectionForInputs.appendChild(htmlElement)
+            })
+        })
+
+        $buttonSearch?.addEventListener('click', () => {
+            const valueToSearch = $inputSeach.value
+            commonActions.searchInTable(valueToSearch)
+        })
+
+        $inputSeach?.addEventListener('keypress', (e) => {
+            if (e.key === "Enter"){
+                const valueToSearch = $inputSeach.value
+                commonActions.searchInTable(valueToSearch)
+            }
+        })
+
+        buttonSaveNew.addEventListener("click", function(e) {
+            e.preventDefault()
+            const formData = {};
+            [...formNew.elements].forEach(item => {
+                if (item.value === '' || item.value === undefined) return
+                let value = item.value
+                if (item.tagName === 'SELECT') {
+                    value = item.options[item.selectedIndex].getAttribute('id')
+                } else if (item.type === 'number' || !isNaN(item.value)) {
+                    value = parseFloat(item.value)
+                }
+                formData[item.name] = value
+            })
+            console.log(formData)
+            actions.submit(stringURL, formData)
+        })
+
+        viewButtons.forEach(button => {
+            button.addEventListener("click", async function() {
+                const datafind = await actions.getEntity(stringURL ,button.getAttribute('data'))
+                //datafind.orderNumber = datafind.id
+                viewFields.innerHTML = ''
+                const htmlPromises = await commonModifyDOM.createAllInputs(formModel, false)
+                const resolvedHtml = await Promise.all(htmlPromises)
+                resolvedHtml.forEach(htmlElement => {
+                    if (htmlElement) viewFields.appendChild(htmlElement)
+                })
+                commonModifyDOM.updateAllViewInputs(viewFields, datafind)
+                commonHelpers.openPopUp(popupView, overlay1)
+            })
+        })
+
+        editButtons.forEach(button => {
+            button.addEventListener("click", async function() {
+                const datafind = await actions.getEntity(stringURL, button.getAttribute('data'))
+                editPopupSelectedTab.setAttribute('data', button.getAttribute('data'))
+                popupEdit.setAttribute('data', datafind.id)
+                editTabs.innerHTML = ''
+                editTabs.insertAdjacentHTML('beforeend', commonModifyDOM.createEditTabs(formModel))
+                
+                document.querySelectorAll(".editTab").forEach(tab => {
+                    tab.addEventListener("click", async function() {
+                        document.querySelectorAll(".editTab").forEach(t => {t.style.background = ''})
+                        tab.style.background = '#ededed'
+                        editFieldsInput.innerHTML = ''
+                        const child = await commonModifyDOM.createNewEditInput(formModel, tab.id)
+                        saveChanges.setAttribute('disabled', true)
+                        if (child) {
+                            editPopupSelectedTab.setAttribute('value', tab.id)
+                            saveChanges.removeAttribute('disabled')
+                            editFieldsInput.appendChild(child)
+                            const fieldName = tab.id // === 'orderNumber' ? 'id' : tab.id
+                            commonModifyDOM.updateNewEditInput(fieldName, datafind[fieldName])
+                        } 
+                    })
+                })
+                commonHelpers.openPopUp(popupEdit, overlay1)
+                saveChanges.setAttribute('disabled', true)
+            })
+        })
+
+        saveChanges.addEventListener("click", function(e) {
+            e.preventDefault()
+            const selectedTab = document.querySelector("#tab-hidden-field")
+            const editInput = document.querySelector(".editInput")
+            let value = editInput.value
+            if (!isNaN(editInput.value)) {
+                value = parseFloat(editInput.value)
+            }
+            if (editInput.tagName === 'SELECT') value = editInput.options[editInput.selectedIndex].getAttribute('id')
+            const dataToUpdate = {
+                id: selectedTab.getAttribute('data'),
+                field: selectedTab.getAttribute('value'),
+                value: value
+            }
+            actions.saveChanges(stringURL, dataToUpdate)
+        })
+
+        closePopupSelect.addEventListener("click", function(e) {
+            e.preventDefault()
+            popupSelect.style.display = 'none'
+        })
+
+        deleteButton.addEventListener("click", function(e) {
+            e.preventDefault()
+            Notiflix.Confirm.show('Delete confirm',`Are you sure to delete this ${stringURL}?`,'Yes','No',
+                () => {
+                    const elementId = editPopupSelectedTab.getAttribute('data')
+                    actions.deleteRegister(stringURL, elementId)
+                },
+                () => {
+                    return false
+                },
+                {okButtonBackground: '#ca3c3c'},
+            )
+        })
+
+        const actions = {
+            getEntity: async function(entity, id) {
+                const response = await fetch(`http://localhost:3000/${entity}/${id}?complete=true`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                const jsonResponse = await response.json()
+                if (jsonResponse.error) {
+                    Notiflix.Loading.remove()
+                    return Notiflix.Notify.failure(result.error.errorTitle || 'An error occurred')
+                }
+                return jsonResponse[0]
+            },
+            saveChanges: function(entity, dataToUpdate) {
+                fetch(`http://localhost:3000/${entity}/${dataToUpdate.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        [dataToUpdate.field]: dataToUpdate.value 
+                    })
+                }).then(res => {
+                    commonHelpers.validateResponse(res, location)
+                })
+            },
+            deleteRegister: function(entity, id) {
+                fetch(`http://localhost:3000/${entity}/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(res => {
+                    commonHelpers.validateResponse(res, location)
+                })
+            },
+            submit: function(entity, newElement) {
+                fetch(`http://localhost:3000/${entity}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newElement)
+                }).then(res => {
+                    commonHelpers.validateResponse(res, location)
+                }).catch((error) => {
+                    Notiflix.Notify.failure(error || 'An error occurred')
+                })
+            }
+        }
+    })
+</script>

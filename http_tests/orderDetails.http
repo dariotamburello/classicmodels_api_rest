@@ -1,0 +1,52 @@
+@adminToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZkYzdmMGJiLTcwNzktNDk3Zi05ZTJmLThkNDRiZWZjNGJkMyIsInVzZXJuYW1lIjoiZHRhbWJ1cmVsbG8iLCJpYXQiOjE3MjMzOTQ1ODYsImV4cCI6MTcyMzM5ODE4Nn0.ny_kIUbfajs5DfGoyqH3QJAp_s3DWIHt1Uplnm07qfw
+@userToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY3NmZhNWJkLTNkYmEtNDBlYS05MjE5LTI0NmQzNjE0ZDNiMiIsInVzZXJuYW1lIjoibWlkdWRldiIsImlhdCI6MTcyMzM5MjE1NCwiZXhwIjoxNzIzMzk1NzU0fQ.d6J0xeoUFxIn-YnEpAzT1qOn5lPEaAhoQT9LSAG2m-U
+@admin=access_token={{adminToken}}
+@user=access_token={{userToken}}
+
+### GET all order details
+GET http://localhost:3000/orderDetails
+Cookie: {{user}}
+
+### GET order details by customerNumber
+GET http://localhost:3000/orderDetails?orderNumber=10103
+Cookie: {{user}}
+
+### GET orders details by id
+GET http://localhost:3000/orderDetails/10105?orderLineNumber=6
+Cookie: {{user}}
+
+### CREATE new order details
+POST http://localhost:3000/orderDetails
+Cookie: {{user}}
+Content-Type: application/json
+
+[{
+    "orderNumber": 10103,
+    "productCode": "S18_2581",
+    "quantityOrdered": 46,
+    "priceEach": 86.31,
+    "orderLineNumber": 17
+},
+{
+    "orderNumber": 10103,
+    "productCode": "S24_1785",
+    "quantityOrdered": 16,
+    "priceEach": 15.20,
+    "orderLineNumber": 18
+}]
+
+// S24_1785 (no included in order 10103)
+// S700_2824 (included in order 10103)
+
+### Delete a order details
+DELETE http://localhost:3000/orderDetails/10103?orderLineNumber=18
+Cookie: {{admin}}
+
+### Update a order details
+PATCH http://localhost:3000/orderDetails/10103?orderLineNumber=10
+Cookie: {{admin}}
+Content-Type: application/json
+
+{
+    "priceEach": 94.5
+}

@@ -1,0 +1,51 @@
+<div id="popup-edit" class="popup" style="display: none;" data="">
+    <div class="popup-content">
+        <header>
+            <h3>Edit element:</h3>
+        </header>
+        <span id="close-edit-popup" class="close-popup">&times;</span>
+        <section>
+            <div class="pure-menu pure-menu-horizontal pure-menu-scrollable">
+                <ul id="edit-tabs-area" class="pure-menu-list">
+                </ul>
+            </div>
+        </section>
+        <form id="edit-form" class="pure-form">
+            <input type="hidden" id="tab-hidden-field" value="" data="" >
+            <fieldset id="edit-fields-input" class="pure-group">
+                <textarea type="textarea" class="pure-input-1" id="editInput" data="" placeholder="[Select a field]" readonly></textarea>
+            </fieldset>
+            <button id="saveChanges" class="pure-button pure-button-primary">Save</button>
+            <button class="pure-button cancel-popup">Cancel</button>
+            <button id="deleteButton" class="button-error pure-button">Delete Item</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const popupEdit = document.querySelector("#popup-edit")
+    const closeEditPopUp = document.querySelector("#close-edit-popup")
+    const cancelPopUp = document.querySelector(".cancel-popup")
+    const saveChanges = document.querySelector("#saveChanges")
+    const overlayFromEdit = document.getElementById("overlay-1")
+    const elementsToClosePopup = [closeEditPopUp, overlayFromEdit, cancelPopUp]
+    const editFieldsInput = document.querySelector("#edit-fields-input")
+
+    elementsToClosePopup.forEach(function(element) {
+        element.addEventListener("click", function(e) {
+            e.preventDefault()
+            helpers.closePopUp(popupEdit, overlayFromEdit)
+        })
+    })
+
+    const helpers = {
+        closePopUp: function(popUp, overlay) {
+            if (overlay.getAttribute('id') == 'overlay-1') {
+                editFieldsInput.innerHTML = ''
+                saveChanges.setAttribute('disabled', true)
+            }
+            overlay.style.display = "none"
+            popUp.style.display = "none"
+        }
+    }
+</script>

@@ -1,0 +1,32 @@
+<div id="popup-view" class="popup" style="display: none; width: 80%;" data="">
+    <div class="popup-content">
+        <header>
+            <h3>View element:</h3>
+        </header>
+        <span id="close-view-popup" class="close-popup">&times;</span>
+        <form id="view-form" class="pure-form pure-form-aligned">
+            <fieldset>
+                <div id="view-fields" class="pure-g"></div>
+            </fieldset>
+        </form>
+        <div id="view-details"></div>
+        <div id="view-image"></div>
+        <button class="pure-button cancel-view-popup">Exit</button>
+    </div>
+</div>
+
+<script>
+    const popupView = document.querySelector("#popup-view")
+    const closeViewPopUp = document.querySelector("#close-view-popup")
+    const exitViewPopUp = document.querySelector(".cancel-view-popup")
+    const overlayFromView = document.querySelector("#overlay-1")
+    const elementsToCloseViewPopup = [closeViewPopUp, overlayFromView, exitViewPopUp]
+    
+    elementsToCloseViewPopup.forEach(function(element) {
+        element.addEventListener("click", function(e) {
+            e.preventDefault()
+            helpers.closePopUp(popupView, overlayFromView)
+        })
+    })
+
+</script>

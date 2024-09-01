@@ -1,0 +1,28 @@
+<div id="popup-select" class="popup" style="display: none;" data="">
+    <div class="popup-content">
+        <header>
+            <span id="close-select-popup" class="close-popup">&times;</span>
+        </header>
+        <div class="bodyTable">
+            <table class="pure-table">
+                <thead></thead>
+                <tbody id="table-body-select"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    const popupSelect = document.querySelector("#popup-select")
+    const closeSelectPopUp = document.querySelector("#close-select-popup")
+    const overlayFromSelect = document.getElementById("overlay-2")
+    const elementsToCloseSelectPopup = [closeSelectPopUp, overlayFromSelect]
+    
+    elementsToCloseSelectPopup.forEach(function(element) {
+        element.addEventListener("click", function(e) {
+            e.preventDefault()
+            helpers.closePopUp(popupSelect, overlayFromSelect)
+        })
+    })
+
+</script>

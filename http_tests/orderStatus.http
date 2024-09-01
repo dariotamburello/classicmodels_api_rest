@@ -1,0 +1,25 @@
+### GET all orders status
+GET http://localhost:3000/orderstatus
+
+### GET orders status by id
+GET http://localhost:3000/orderstatus/1
+
+### CREATE new order status
+POST http://localhost:3000/orderstatus
+Content-Type: application/json
+
+{
+    "title": "In Process",
+    "description": "Order received and waiting for next status."
+}
+
+### Delete a order status
+DELETE http://localhost:3000/orderstatus/3
+
+### Update a order status
+PATCH http://localhost:3000/orderstatus/3
+Content-Type: application/json
+
+{
+    "description": "hola"
+}

@@ -1,0 +1,80 @@
+@adminToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZkYzdmMGJiLTcwNzktNDk3Zi05ZTJmLThkNDRiZWZjNGJkMyIsInVzZXJuYW1lIjoiZHRhbWJ1cmVsbG8iLCJpYXQiOjE3MjMzMTU2MjgsImV4cCI6MTcyMzMxOTIyOH0.PNkJLM8ob98e3oaN48l1-4pvTe61IwiTjuAqslUpOnc
+@userToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY3NmZhNWJkLTNkYmEtNDBlYS05MjE5LTI0NmQzNjE0ZDNiMiIsInVzZXJuYW1lIjoibWlkdWRldiIsImlhdCI6MTcyMzMxNTYwMSwiZXhwIjoxNzIzMzE5MjAxfQ.YKvJHBYC3g5pSlSlvERC9Xrmwx43JvFDh8a91LA1pxc
+@admin=access_token={{adminToken}}
+@user=access_token={{userToken}}
+
+### GET all users
+GET http://localhost:3000/users
+Cookie: {{admin}}
+
+### GET users by id
+GET http://localhost:3000/users/7404ece0-99ea-49da-954d-1753d5f241eb
+Cookie: {{user}}
+
+### CREATE new users
+POST http://localhost:3000/users
+Cookie: {{admin}}
+Content-Type: application/json
+
+{
+    "username": "angyeva2",
+    "password": "1111111"
+}
+
+### Delete a user
+DELETE http://localhost:3000/users/7404ece0-99ea-49da-954d-1753d5f241eb
+Cookie: {{admin}}
+
+### Update a user
+PATCH http://localhost:3000/users/7404ece0-99ea-49da-954d-1753d5f241eb
+Cookie: {{admin}}
+Content-Type: application/json
+
+{
+    "active": false
+}
+
+
+##########################
+### LOGIN AND REGISTER ###
+##########################
+
+### REGISTER new user
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "username": "angyeva",
+    "password": "1111111"
+}
+
+
+
+
+### Try login USER
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "username": "midudev",
+    "password": "abc1234"
+}
+
+### Try login USER
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "username": "angy",
+    "password": "1111111"
+}
+
+### Try login ADMIN
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "username": "dtamburello",
+    "password": "1234567"
+}
+

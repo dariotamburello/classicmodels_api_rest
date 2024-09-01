@@ -1,0 +1,31 @@
+### Recuperar todas los product lines
+GET http://localhost:3000/productlines
+
+### Recuperar product line por id
+GET http://localhost:3000/productlines/Figuras
+
+# ### Recuperar una pelicula por un genero
+# GET http://localhost:9900/movies?genre=action
+
+### Guardar un nuevo product line
+POST http://localhost:3000/productlines
+Content-Type: application/json
+
+{
+  "productLine": "Figuras",
+  "textDescription": "Figuras de accion",
+  "htmlDescription": "<p>Figura</p>",
+  "image": null
+}
+
+### Borrar un product line
+DELETE http://localhost:3000/productlines/Figuras
+
+### Update a product line
+PATCH http://localhost:3000/productlines/Figuras2
+Content-Type: application/json
+
+{
+    "textDescription": "Figuras de Saint Seiya linea Exclamation",
+    "productLine": "Figuras"
+}

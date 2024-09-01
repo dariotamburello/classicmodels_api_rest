@@ -1,0 +1,32 @@
+<% 
+%>
+
+<table class="pure-table">
+    <thead>
+        <tr>
+            <% if (titles > 0) {%>
+                <% 
+                for (let i=0; i<titles.length; i++) {%>
+                    <th><%= titles[i] %></th>
+                <% } %>
+            <% } %>
+        </tr>
+    </thead>
+    <tbody>
+        
+        <% for(let i=0; i<rows.length; i++) {%>
+            <tr>
+                <% for(let key in rows[i]) {%>
+                    <td>
+                        <% if (key === "image") {%>
+                            <img src="<%= rows[i][key] %>" alt="<%= rows[i][key] %>">
+                        <% } else { %>        
+                            <%= rows[i][key] %>
+                        <% } %>
+                    </td>
+                <% } %>
+            </tr>
+        <% } %>
+        
+    </tbody>
+</table>

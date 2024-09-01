@@ -1,0 +1,56 @@
+
+    <div class="container container-form-login">
+        <% if ( typeof username === 'undefined' ) { %>
+
+        <form id="login-form" class="pure-form pure-form-stacked">
+            <fieldset>
+                <legend>Login</legend>
+                <input type="text" id="login-username" name="username" placeholder="username" />
+                <input type="password" id="login-password" name="password" placeholder="Password" />
+                <label for="default-remember">
+                    <input type="checkbox" id="default-remember" /> Remember me
+                </label>
+                <button type="submit" class="pure-button pure-button-primary">Sign in</button>
+            </fieldset>
+        </form>
+        <% } %>
+    </div>
+
+    <script type="module">
+        //import Notiflix from '/js/libs/notiflix.js'
+        const $ = el => document.querySelector(el)
+
+        const loginForm = $('#login-form')
+
+        loginForm?.addEventListener('submit', e => {
+            e.preventDefault()
+            const username = $('#login-username').value
+            const password = $('#login-password').value
+
+            fetch('/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({username, password})
+            }).then(res => {
+                helpers.validateResponse(res)
+            })
+        })
+
+        const helpers = {
+            validateResponse: function(response) {
+                if(response.ok){
+                    //Notiflix.Loading.standard('Logging in...')
+                    setInterval(() => {
+                        //Notiflix.Loading.remove()
+                        window.location.href = '/dashboard'
+                    }, 2000)
+                } else {
+                    response.json().then(errorData => {
+                        //Notiflix.Notify.failure(errorData.error.errorTitle || 'An error occurred')
+                    })
+                }
+            }
+        }
+    </script>

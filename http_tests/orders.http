@@ -1,0 +1,69 @@
+@adminToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZkYzdmMGJiLTcwNzktNDk3Zi05ZTJmLThkNDRiZWZjNGJkMyIsInVzZXJuYW1lIjoiZHRhbWJ1cmVsbG8iLCJpYXQiOjE3MjM5MTQwNzEsImV4cCI6MTcyMzkxNzY3MX0.l8sXkFSi06CvaFBJ6yc0P7XPqSlf0uqSJDO-RzjI224
+@userToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY3NmZhNWJkLTNkYmEtNDBlYS05MjE5LTI0NmQzNjE0ZDNiMiIsInVzZXJuYW1lIjoibWlkdWRldiIsImlhdCI6MTcyMzkxNDA1NiwiZXhwIjoxNzIzOTE3NjU2fQ.lFWDU188imNctY6rCVrz-TXoFJq6zIoUaJGHYVJrdCI
+@admin=access_token={{adminToken}}
+@user=access_token={{userToken}}
+
+### GET all orders 
+GET http://localhost:3000/orders
+Cookie: {{admin}}
+
+### GET orders by customerNumber
+GET http://localhost:3000/orders?customerNumber=398
+Cookie: {{admin}}
+
+### GET orders by id
+GET http://localhost:3000/orders/10433
+Cookie: {{user}}
+
+
+### CREATE new order with orderDetails
+POST http://localhost:3000/orders
+Cookie: {{user}}
+Content-Type: application/json
+
+{
+    "pickUpDate": "2024-08-31",
+    "customerNumber": 398,
+    "total": 9.99,
+    "status": 1,
+    "paymentMethod": 1,
+    "pickUpOffice": 1,
+    "orderDetails":
+        [{
+            "productCode": "S18_2581",
+            "quantityOrdered": 46,
+            "priceEach": 86.31,
+            "orderLineNumber": 1
+        },
+        {
+            "productCode": "S24_1785",
+            "quantityOrdered": 16,
+            "priceEach": 15.20,
+            "orderLineNumber": 2
+        }]
+}
+
+### CREATE new order without orderDetails
+POST http://localhost:3000/orders
+Content-Type: application/json
+
+{
+    "pickUpDate": "2024-07-31",
+    "customerNumber": 398,
+    "total": 9.99,
+    "status": 1,
+    "paymentMethod": 1,
+    "pickUpOffice": 1
+}
+
+### Delete a orders
+DELETE http://localhost:3000/orders/10441
+
+### Update a orders
+PATCH http://localhost:3000/orders/10433
+Content-Type: application/json
+
+{
+    "paymentCheckNumber": "HQ336336",
+    "status": 9
+}

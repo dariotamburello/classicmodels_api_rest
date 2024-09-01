@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <title>Backoffice Dashboard</title>
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css" />
+    <link rel="stylesheet" href="/styles/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+  <div class="sidebar">
+    <div class="logo-details">
+      <i class='bx bxl-c-plus-plus'></i>
+      <span class="logo_name">Panel</span>
+    </div>
+      <ul class="nav-links">
+        <li>
+          <a href="/dashboard" class="">
+            <i class='bx bx-grid-alt' ></i>
+            <span class="links_name">Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="/dashboard/products?page=1">
+            <i class='bx bx-box' ></i>
+            <span class="links_name">Products</span>
+          </a>
+        </li>
+        <li>
+          <a href="/dashboard/orders?page=1">
+            <i class='bx bx-list-ul' ></i>
+            <span class="links_name">Orders list</span>
+          </a>
+        </li>
+        <li>
+          <a href="/dashboard/payments?page=1">
+            <i class='bx bx-credit-card' ></i>
+            <span class="links_name">Payments</span>
+          </a>
+        </li>
+        <li>
+          <a href="/dashboard/customers?page=1">
+            <i class='bx bx-user' ></i>
+            <span class="links_name">Customers</span>
+          </a>
+        </li>
+        <li>
+          <a href="/dashboard/settings">
+            <i class='bx bx-cog' ></i>
+            <span class="links_name">Setting</span>
+          </a>
+        </li>
+        <!-- <li class="log_out">
+          <a href="#">
+            <i class=''></i>
+            <span class="links_name">Log out</span>
+          </a>
+        </li> -->
+      </ul>
+  </div>
+  
+  <section class="home-section">
+    <% if ( typeof data.username !== 'undefined' ) { %>
+      <nav>
+        <div class="sidebar-button">
+          <i class='bx bx-menu sidebarBtn'></i>
+          <span class="dashboard">Dashboard</span>
+        </div>
+        <div class="search-box">
+          <input type="text" id="dashboard-search" placeholder="Search...">
+          <i class='bx bx-search' ></i>
+          <div id="search-results" class="search-results"></div>
+        </div>
+        <div class="profile-details">
+          <i id="" class="bx bxs-user"></i>
+          <span class="admin_name"><%= data.username %></span>
+          <i id="logout" class="bx bx-log-out"></i>
+        </div>
+    </nav>
+    <% } %>
+    
+    <%-body%>
+
+  </section>
+
+  <script>
+    let sidebar = document.querySelector(".sidebar")
+    let sidebarBtn = document.querySelector(".sidebarBtn")
+    sidebarBtn.onclick = function() {
+    sidebar.classList.toggle("active")
+    if (sidebar.classList.contains("active")) {
+      sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right")
+    } else
+      sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu")
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentPath = window.location.pathname
+      const menuLinks = document.querySelectorAll('li a')
+      
+      menuLinks.forEach(link => {
+        const linkPath = new URL(link.href).pathname;
+        if (linkPath === currentPath) {
+            link.classList.add('active')
+        } else {
+            link.classList.remove('active')
+        }
+      })
+    })
+  </script>
+
+  <script>
+    const $ = el => document.querySelector(el)
+    const buttonLogout = $('#logout')
+
+    buttonLogout.addEventListener('click', e => {
+      e.preventDefault()
+      fetch('/auth/logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+      }).then(res => {
+        if(res.ok){
+            window.location.href = '/'
+        } else {
+            console.log('error trying close session')
+        }
+      })
+    })
+  </script>
+
+  <script>
+    document.getElementById('dashboard-search').addEventListener('input', async function () {
+      const query = this.value.toLowerCase()
+      const resultsContainer = document.getElementById('search-results')
+
+      if (!query) {
+        resultsContainer.style.display = 'none'
+        return
+      }
+
+      const views = [
+        { name: 'Dashboard', url: '/dashboard' },
+        { name: 'Products', url: '/dashboard/products?page=1' },
+        { name: 'Orders', url: '/dashboard/orders?page=1' },
+        { name: 'Payments', url: '/dashboard/payments?page=1' },
+        { name: 'Customers', url: '/dashboard/customers?page=1' },
+        { name: 'Settings', url: '/dashboard/settings' },
+        { name: 'Offices', url: '/dashboard/offices?page=1' },
+        { name: 'Payment Methods', url: '/dashboard/paymentmethods?page=1' },
+        { name: 'Payment Status', url: '/dashboard/paymentstatus?page=1' },
+        { name: 'Order Status', url: '/dashboard/orderstatus?page=1' },
+        { name: 'Product Lines', url: '/dashboard/productlines?page=1' },
+        { name: 'Users', url: '/dashboard/users?page=1' }
+      ]
+
+      const filteredViews = views.filter(view =>
+        view.name.toLowerCase().includes(query)
+      )
+
+      resultsContainer.innerHTML = ''
+
+      if (filteredViews.length > 0) {
+        filteredViews.forEach(view => {
+          const resultItem = document.createElement('a')
+          resultItem.href = view.url
+          resultItem.textContent = view.name
+          resultsContainer.appendChild(resultItem)
+        });
+        resultsContainer.style.display = 'block'
+      } else {
+        resultsContainer.style.display = 'none'
+      }
+    })
+
+  </script>
+
+</body>
+</html>

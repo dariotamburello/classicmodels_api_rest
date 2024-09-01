@@ -1,0 +1,47 @@
+@adminToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZkYzdmMGJiLTcwNzktNDk3Zi05ZTJmLThkNDRiZWZjNGJkMyIsInVzZXJuYW1lIjoiZHRhbWJ1cmVsbG8iLCJpYXQiOjE3MjMzNzMxMjAsImV4cCI6MTcyMzM3NjcyMH0.C8wVTvuMAdR6qCex5AghnO9PsdORcl6tcu79TzL9NwY
+@userToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY3NmZhNWJkLTNkYmEtNDBlYS05MjE5LTI0NmQzNjE0ZDNiMiIsInVzZXJuYW1lIjoibWlkdWRldiIsImlhdCI6MTcyMzM3MzA5MCwiZXhwIjoxNzIzMzc2NjkwfQ.qqUxh_Q1m1AMTJWbXfya-auJ0QpCQ4vY1N0V2Tw7ftI
+@admin=access_token={{adminToken}}
+@user=access_token={{userToken}}
+
+### GET all customers 
+GET http://localhost:3000/customers
+Cookie: {{admin}}
+
+### GET customers by salesRepEmployeeNumber
+GET http://localhost:3000/customers?salesRepEmployeeNumber=1702
+Cookie: {{admin}}
+
+### GET customer by id
+GET http://localhost:3000/customers/376
+Cookie: {{user}}
+
+### CREATE new customer
+POST http://localhost:3000/customers
+Content-Type: application/json
+
+{
+    "customerName": "Dario Tamburello",
+    "contactLastName": "Tamburello",
+    "contactFirstName": "Dario",
+    "phone": "3515174969",
+    "addressLine1": "Charcas 3471",
+    "city": "Cordoba",
+    "state": "Cordoba",
+    "postalCode": "5013",
+    "country": "Argentina",
+    "salesRepEmployeeNumber": 1702,
+    "creditLimit": 0.00
+}
+
+### Delete a costumer
+DELETE http://localhost:3000/customers/508
+Cookie: {{admin}}
+
+### Update a customer
+PATCH http://localhost:3000/customers/508
+Cookie: {{user}}
+Content-Type: application/json
+
+{
+    "addressLine1": "169 A Westminster"
+}
