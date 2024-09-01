@@ -1,4 +1,4 @@
-process.loadEnvFile()
+// process.loadEnvFile()
 
 export const configurationEncrypt = {
   SALT_ROUNDS: 10,

@@ -1,4 +1,4 @@
-process.loadEnvFile()
+// process.loadEnvFile()
 
 export const globalSettings = {
   ENVIRONMENT: process.env.ENVIRONMENT ?? 'testing',
