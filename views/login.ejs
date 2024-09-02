@@ -27,7 +27,7 @@
             const username = $('#login-username').value
             const password = $('#login-password').value
 
-            fetch('/paymentMethods', {
+            fetch('https://classicmodels-api-rest.vercel.app/paymentMethods', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
