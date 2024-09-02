@@ -14,7 +14,7 @@ import { UsersModel } from '../models/users.js'
 import { AppError } from '../utils/errorTypes.js'
 
 export class DashboardController {
-  dashboard = async (req, res) => {
+  dashboard = async (req, res, next) => {
     try {
       const { user } = req.session
       const username = user.username
@@ -92,7 +92,7 @@ export class DashboardController {
         res.send(html)
       })
     } catch (error) {
-      console.log(error)
+      next(new AppError(error, `[${this.constructor.name}] ${this.productsView.name}`))
     }
   }
 

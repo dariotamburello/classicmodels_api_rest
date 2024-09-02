@@ -61,6 +61,15 @@ Content-Type: application/json
 }
 
 ### Try login USER
+POST https://classicmodels-api-rest.vercel.app/auth/login
+Content-Type: application/json
+
+{
+    "username": "midudev",
+    "password": "abc1234"
+}
+
+### Try login USER
 POST http://localhost:3000/auth/login
 Content-Type: application/json
 
