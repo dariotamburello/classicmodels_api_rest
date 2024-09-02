@@ -28,7 +28,7 @@
             const password = $('#login-password').value
 
             fetch('/paymentMethods', {
-                method: 'GET',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
