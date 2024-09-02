@@ -19,7 +19,7 @@ export class PaymentMethodsModel {
   static async getById ({ id }) {
     try {
       const paymentMethod = await connection.query(
-        'SELECT * FROM paymentMethods WHERE id = ?;',
+        'SELECT * FROM paymentmethods WHERE id = ?;',
         [id]
       )
       if (!paymentMethod) return []
@@ -37,7 +37,7 @@ export class PaymentMethodsModel {
       } = input
 
       const result = await connection.query(
-        `INSERT INTO paymentMethods (
+        `INSERT INTO paymentmethods (
             type,
             enabled
         ) VALUES (?, ?);`,
@@ -56,7 +56,7 @@ export class PaymentMethodsModel {
   static async delete (id) {
     try {
       const result = await connection.query(
-        'DELETE FROM paymentMethods WHERE id = ?;',
+        'DELETE FROM paymentmethods WHERE id = ?;',
         [id]
       )
       if (result[0].affectedRows === 0) return false
@@ -77,7 +77,7 @@ export class PaymentMethodsModel {
       }
 
       await connection.query(
-        `UPDATE paymentMethods
+        `UPDATE paymentmethods
         SET type = ?,
             enabled = ?
         WHERE id = ${id};`,

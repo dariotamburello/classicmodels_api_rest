@@ -27,11 +27,13 @@
             const username = $('#login-username').value
             const password = $('#login-password').value
 
-            fetch('/auth/login2', {
-                method: 'POST',
+            fetch('/paymentMethods', {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                // body: JSON.stringify({username, password})
+                body: JSON.stringify({type: 'trash', enabled: true})
             }).then(res => {
                 helpers.validateResponse(res)
             })
@@ -44,7 +46,7 @@
                     Notiflix.Loading.standard('Logging in...')
                     setInterval(() => {
                         Notiflix.Loading.remove()
-                        //window.location.href = '/dashboard'
+                        // window.location.href = '/dashboard'
                     }, 2000)
                 } else {
                     response.json().then(errorData => {
