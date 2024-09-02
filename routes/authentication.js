@@ -9,7 +9,7 @@ export const createAuthenticationRouter = ({ usersModel }) => {
     res.json('hello')
   })
   authenticationRouter.post('/login2', (req, res) => {
-    res.send('NEW LOGIN POST')
+    res.json('NEW LOGIN POST')
   })
   authenticationRouter.post('/login', authenticationController.login)
   authenticationRouter.post('/register', authenticationController.register)
