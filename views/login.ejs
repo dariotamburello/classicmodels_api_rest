@@ -46,7 +46,7 @@
                     Notiflix.Loading.standard('Logging in...')
                     setInterval(() => {
                         Notiflix.Loading.remove()
-                        // window.location.href = '/dashboard'
+                        window.location.href = '/dashboard'
                     }, 2000)
                 } else {
                     response.json().then(errorData => {
