@@ -207,7 +207,7 @@
                 return jsonResponse[0]
             },
             saveChanges: function(entity, dataToUpdate) {
-                fetch(`http://localhost:3000/${entity}/${dataToUpdate.id}`, {
+                fetch(`/${entity}/${dataToUpdate.id}`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json'
@@ -220,7 +220,7 @@
                 })
             },
             deleteRegister: function(entity, id) {
-                fetch(`http://localhost:3000/${entity}/${id}`, {
+                fetch(`/${entity}/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
@@ -230,7 +230,7 @@
                 })
             },
             submit: function(entity, newElement) {
-                fetch(`http://localhost:3000/${entity}/`, {
+                fetch(`/${entity}/`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
