@@ -8,7 +8,8 @@ const ACCEPTED_ORIGINS = [
   'https://classicmodels-api-rest.vercel.app/',
   'https://classicmodels-api-rest.vercel.app*',
   'http://76.76.21.164:443',
-  'https://76.76.21.164:443'
+  'https://76.76.21.164:443',
+  'https://classicmodels-api-rest.vercel.app'
 ]
 
 export const corsMiddleware = ({ acceptedOrigins = ACCEPTED_ORIGINS } = {}) => cors({

@@ -27,7 +27,7 @@
             const username = $('#login-username').value
             const password = $('#login-password').value
 
-            fetch('http://localhost:3000/auth/login', {
+            fetch('/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
