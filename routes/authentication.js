@@ -8,6 +8,9 @@ export const createAuthenticationRouter = ({ usersModel }) => {
   authenticationRouter.get('/login', (req, res) => {
     res.send('hello')
   })
+  authenticationRouter.post('/login2', (req, res) => {
+    res.send('NEW LOGIN POST')
+  })
   authenticationRouter.post('/login', authenticationController.login)
   authenticationRouter.post('/register', authenticationController.register)
   authenticationRouter.post('/logout', authenticationController.logout)
