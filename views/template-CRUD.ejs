@@ -28,9 +28,10 @@
 <%- include('./components/popup-select'); -%>
 
 <script type="module">
-    import Notiflix from '/js/libs/notiflix.js'
+    // import Notiflix from '/js/libs/notiflix.js'
     import { commonHelpers, commonModifyDOM, formatDateToInput, commonActions } from '/js/helpers/commonFunctions.js'
     const formModel = <%- JSON.stringify(modelForm) %>
+    const stringURL = <%- JSON.stringify(stringURL) %>
 
     window.addEventListener('load', function () {
         const overlay1 = document.querySelector('#overlay-1')
@@ -112,7 +113,7 @@
 
         viewButtons.forEach(button => {
             button.addEventListener("click", async function() {
-                const datafind = await actions.getEntity(stringURL ,button.getAttribute('data'))
+                const datafind = await actions.getEntity(stringURL, button.getAttribute('data'))
                 //datafind.orderNumber = datafind.id
                 viewFields.innerHTML = ''
                 const htmlPromises = await commonModifyDOM.createAllInputs(formModel, false)
@@ -192,7 +193,7 @@
 
         const actions = {
             getEntity: async function(entity, id) {
-                const response = await fetch(`http://localhost:3000/${entity}/${id}?complete=true`, {
+                const response = await fetch(`/${entity}/${id}?complete=true`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'

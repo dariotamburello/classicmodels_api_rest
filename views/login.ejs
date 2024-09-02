@@ -33,7 +33,6 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({username, password})
-                //body: JSON.stringify({type: 'trash', enabled: true})
             }).then(res => {
                 helpers.validateResponse(res)
             })
@@ -42,7 +41,7 @@
         const helpers = {
             validateResponse: function(response) {
                 if(response.ok){
-                    console.log(response)
+                    // console.log(response)
                     Notiflix.Loading.standard('Logging in...')
                     setInterval(() => {
                         Notiflix.Loading.remove()
@@ -50,10 +49,10 @@
                     }, 2000)
                 } else {
                     response.json().then(errorData => {
-                        console.log(errorData)
+                        // console.log(errorData)
                         Notiflix.Notify.failure(errorData.error.errorTitle || 'An error occurred')
                     }).catch(err => {
-                        console.log(response)
+                        // console.log(response)
                         Notiflix.Notify.failure('An error occurred')
                     })
                 }

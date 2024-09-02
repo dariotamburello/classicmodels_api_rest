@@ -1,4 +1,4 @@
-import Notiflix from '../libs/notiflix.js'
+// import Notiflix from '../libs/notiflix.js'
 
 export const formatDateToInput = (dateString) => {
   if (dateString === null) return null
@@ -306,7 +306,7 @@ export const commonModifyDOM = {
 
 export const commonActions = {
   getEntity: async function (entity) {
-    const response = await fetch(`http://localhost:3000/${entity}/`, {
+    const response = await fetch(`/${entity}/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

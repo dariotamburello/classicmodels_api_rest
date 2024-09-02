@@ -14,7 +14,6 @@ export class AuthenticationController {
   }
 
   login = async (req, res, next) => {
-    console.log('login...')
     const { username, password } = req.body
     try {
       const userFound = await this.usersModel.getByUsername(username)
