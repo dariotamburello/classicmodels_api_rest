@@ -31,8 +31,7 @@
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({username, password})
+                }
             }).then(res => {
                 helpers.validateResponse(res)
             })
@@ -41,10 +40,11 @@
         const helpers = {
             validateResponse: function(response) {
                 if(response.ok){
+                    console.log(response)
                     Notiflix.Loading.standard('Logging in...')
                     setInterval(() => {
                         Notiflix.Loading.remove()
-                        window.location.href = '/dashboard'
+                        //window.location.href = '/dashboard'
                     }, 2000)
                 } else {
                     response.json().then(errorData => {
