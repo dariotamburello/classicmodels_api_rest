@@ -32,7 +32,7 @@ export class AuthenticationController {
       res
         .cookie('access_token', token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
+          secure: process.env.ENV === 'prd',
           sameSite: 'strict',
           maxAge: 1000 * 60 * 60
         })
