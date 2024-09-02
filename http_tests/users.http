@@ -87,3 +87,11 @@ Content-Type: application/json
     "password": "1234567"
 }
 
+###
+POST https://classicmodels-api-rest.vercel.app/auth/login2
+Content-Type: application/json
+
+{
+    "username": "dtamburello",
+    "password": "1234567"
+}

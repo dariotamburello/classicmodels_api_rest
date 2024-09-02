@@ -27,8 +27,8 @@
             const username = $('#login-username').value
             const password = $('#login-password').value
 
-            fetch('/auth/login2', {
-                method: 'POST',
+            fetch('/auth/login', {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -41,7 +41,6 @@
         const helpers = {
             validateResponse: function(response) {
                 if(response.ok){
-                    console.log('1232')
                     Notiflix.Loading.standard('Logging in...')
                     setInterval(() => {
                         Notiflix.Loading.remove()
