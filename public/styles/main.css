@@ -544,6 +544,8 @@ body {
         }
       }
     }
+
+    
   }
   
   .box{
@@ -625,6 +627,51 @@ body {
 
       a:hover{
         background:  #0d3073;
+      }
+    }
+  }
+
+  #settings-links {
+    padding: 40px 30px;
+    padding-top: 100px;
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+
+      li {
+        list-style: none;
+        border: 1px solid;
+        border-radius: 20px;
+        height: 150px;
+        width: 150px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-inline: 20px;
+
+        a {
+          text-decoration: none;
+          display: flex;
+          flex-direction: column;
+
+          i {
+            font-size: 4rem;
+            transition: transform 2s;
+          }
+        }
+
+        a:hover {
+          i {
+            transform: scale(1.5) rotate(360deg);
+          }
+        }
+
+        a:visited {
+          color: black;
+        }
       }
     }
   }
