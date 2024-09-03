@@ -7,6 +7,7 @@ import { AuthError, DataError, ValidationError } from '../utils/errorTypes.js'
 import { errorTypes } from '../constants/errorTypes.js'
 import { getFormattedDateTime } from '../helpers/datetimes.js'
 import { globalSettings } from '../configuration/globalSettings.js'
+import { userActive } from '../constants/userActive.js'
 
 export class AuthenticationController {
   constructor ({ usersModel }) {
@@ -17,7 +18,7 @@ export class AuthenticationController {
     const { username, password } = req.body
     try {
       const userFound = await this.usersModel.getByUsername(username)
-      if (!userFound || userFound.active === 0) throw new AuthError(errorTypes.ERROR_LOGIN, req)
+      if (!userFound || userFound.active === userActive.DISABLED) throw new AuthError(errorTypes.ERROR_LOGIN, req)
       const checkPassword = await bcrypt.compare(password, userFound.password)
       if (!checkPassword) throw new AuthError(errorTypes.ERROR_LOGIN, req)
       this.usersModel.update(userFound.id, { lastLogin: getFormattedDateTime() })

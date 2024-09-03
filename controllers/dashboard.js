@@ -514,7 +514,7 @@ export class DashboardController {
         username,
         registerAt: formatDate(registerAt),
         lastLogin: formatDate(lastLogin),
-        active: active ? 'Active' : 'Inactive',
+        active,
         ...rest
       }))
 

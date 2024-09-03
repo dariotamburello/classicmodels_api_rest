@@ -1,5 +1,6 @@
 import mysql from 'mysql2/promise'
 import { configuration } from '../configuration/dbConnections.js'
+import { DBError } from '../utils/errorTypes.js'
 
 const connection = await mysql.createConnection(configuration)
 
@@ -11,8 +12,20 @@ export class PaymentMethodsModel {
       )
       if (paymentMethods.length === 0) return []
       return paymentMethods
-    } catch (e) {
-      throw new Error(`Error getting payment methods: ${e.message}`)
+    } catch (error) {
+      throw new DBError(error, 'Error getting payments methods.')
+    }
+  }
+
+  static async getAllActive () {
+    try {
+      const [paymentMethods] = await connection.query(
+        'SELECT * FROM paymentmethods WHERE enabled = 1;'
+      )
+      if (paymentMethods.length === 0) return []
+      return paymentMethods
+    } catch (error) {
+      throw new DBError(error, 'Error getting payments methods.')
     }
   }
 
@@ -24,32 +37,35 @@ export class PaymentMethodsModel {
       )
       if (!paymentMethod) return []
       return paymentMethod[0]
-    } catch (e) {
-      throw new Error(`Error getting payment methods: ${e.message}`)
+    } catch (error) {
+      throw new DBError(error, 'Error getting payments methods.')
     }
   }
 
   static async create (input) {
     try {
       const {
+        id,
         type,
         enabled
       } = input
 
       const result = await connection.query(
         `INSERT INTO paymentmethods (
+            id,
             type,
             enabled
-        ) VALUES (?, ?);`,
+        ) VALUES (?, ?, ?);`,
         [
+          id,
           type,
           enabled
         ]
       )
       input.id = result[0].insertId
       return input
-    } catch (e) {
-      throw new Error(`Error creating payment methods: ${e.message}`)
+    } catch (error) {
+      throw new DBError(error, 'Error creating payment methods.')
     }
   }
 
@@ -61,8 +77,8 @@ export class PaymentMethodsModel {
       )
       if (result[0].affectedRows === 0) return false
       return true
-    } catch (e) {
-      throw new Error(`Error deleting payment methods: ${e.message}`)
+    } catch (error) {
+      throw new DBError(error, 'Error deleting payment methods.')
     }
   }
 
@@ -80,15 +96,16 @@ export class PaymentMethodsModel {
         `UPDATE paymentmethods
         SET type = ?,
             enabled = ?
-        WHERE id = ${id};`,
+        WHERE id = ?`,
         [
+          id,
           paymentMethodComplete.type,
           paymentMethodComplete.enabled
         ]
       )
       return paymentMethodComplete
-    } catch (e) {
-      throw new Error(`Error updating payment method: ${e.message}`)
+    } catch (error) {
+      throw new DBError(error, 'Error updating payment method.')
     }
   }
 }

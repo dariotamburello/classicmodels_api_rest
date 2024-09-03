@@ -8,18 +8,11 @@ const connection = await mysql.createConnection(configuration)
 export class PaymentsModel {
   static async getAll ({ customerNumber }) {
     try {
-      if (customerNumber) {
-        const [paymentsBycustomerNumber] = await connection.query(
-          'SELECT * FROM payments WHERE customerNumber = ?;',
-          [customerNumber]
-        )
-        if (paymentsBycustomerNumber.length > 0) return paymentsBycustomerNumber
-        return []
-      }
       const [payments] = await connection.query(
         'SELECT * FROM payments;'
       )
       if (payments.length === 0) return []
+      if (customerNumber) return payments.filter(p => (p.customerNumber === +customerNumber))
       return payments
     } catch (error) {
       throw new DBError(error, 'Error getting payments.')

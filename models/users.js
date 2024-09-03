@@ -20,7 +20,8 @@ export class UsersModel {
   static async getById ({ id }) {
     try {
       const user = await connection.query(
-        `SELECT * FROM users WHERE id = '${id}';`
+        'SELECT * FROM users WHERE id = ?;',
+        [id]
       )
       if (!user) return []
       return user[0]
@@ -37,12 +38,12 @@ export class UsersModel {
         hashedPassword,
         registerAt,
         active,
-        usertype
+        usergroup
       } = input
 
       await connection.query(
-        'INSERT INTO users SET id = ?, username = ?, password = ?, registerAt = ?, active = ?, usertype = ?;',
-        [id, username, hashedPassword, registerAt, active, usertype]
+        'INSERT INTO users SET id = ?, username = ?, password = ?, registerAt = ?, active = ?, usergroup = ?;',
+        [id, username, hashedPassword, registerAt, active, usergroup]
       )
 
       return { id, username, registerAt }
@@ -54,7 +55,8 @@ export class UsersModel {
   static async delete (id) {
     try {
       const result = await connection.query(
-        `DELETE FROM users WHERE id = '${id}';`
+        'DELETE FROM users WHERE id = ?;',
+        [id]
       )
       if (result[0].affectedRows === 0) return false
       return true
@@ -71,15 +73,16 @@ export class UsersModel {
       const newUser = {
         password: input.password ?? existUser[0].password,
         lastLogin: input.lastLogin ?? existUser[0].lastLogin,
-        active: input.active ?? existUser[0].active
+        active: input.active ?? existUser[0].active,
+        usergroup: input.usergroup ?? existUser[0].usergroup
       }
 
       const result = await connection.query(
         `UPDATE users 
-        SET password = ?, lastLogin = ?, active = ?
-        WHERE id = '${id}';`,
+        SET password = ?, lastLogin = ?, active = ?, usergroup = ?
+        WHERE id = ?;`,
         [
-          newUser.password, newUser.lastLogin, newUser.active
+          newUser.password, newUser.lastLogin, newUser.active, newUser.usergroup, id
         ]
       )
       if (!result) return false
@@ -92,7 +95,8 @@ export class UsersModel {
   static async getByUsername (username) {
     try {
       const user = await connection.query(
-        `SELECT * FROM users WHERE username = '${username}';`
+        'SELECT * FROM users WHERE username = ?;',
+        [username]
       )
       if (user[0].length === 0) return false
       return user[0][0]

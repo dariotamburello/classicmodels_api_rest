@@ -5,8 +5,8 @@ const paymentMethodScheme = z.object({
     invalid_type_error: 'Type must be a string',
     required_error: 'Type is required'
   }),
-  enabled: z.boolean({
-    invalid_type_error: 'Enabled must be a boolean',
+  enabled: z.string({
+    invalid_type_error: 'Enabled must be a string',
     required_error: 'Enabled is required'
   })
 })

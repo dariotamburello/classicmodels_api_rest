@@ -1,5 +1,7 @@
 import z from 'zod'
 import { UsersModel } from '../models/users.js'
+import { userActive } from '../constants/userActive.js'
+import { userGroups } from '../constants/userGroups.js'
 
 const authenticationScheme = z.object({
   username: z.string({
@@ -18,12 +20,19 @@ const authenticationScheme = z.object({
     }, 'Password must have 7 or more chararters'),
   lastLogin: z
     .string({
-      invalid_type_error: 'Last login must be a datetime'
+      invalid_type_error: 'Last login must be a datetime.'
     }).transform((val) => new Date(val))
-    .refine((val) => !isNaN(val.getTime()), 'Last login must be a valid datetime')
+    .refine((val) => !isNaN(val.getTime()), 'Last login must be a valid datetime.')
     .optional(),
   active: z
-    .boolean({ invalid_type_error: 'Active status must be a boolean' })
+    .enum([userActive.ACTIVE, userActive.DISABLED], {
+      errorMap: (issue, ctx) => ({ message: 'Please select an option.' })
+    })
+    .optional(),
+  usergroup: z
+    .enum([userGroups.USER, userGroups.MODERATOR, userGroups.ADMIN], {
+      errorMap: (issue, ctx) => ({ message: 'Please select an option.' })
+    })
     .optional()
 })
 

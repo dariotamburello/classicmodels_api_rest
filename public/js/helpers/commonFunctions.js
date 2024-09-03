@@ -62,7 +62,7 @@ export const commonModifyDOM = {
         newLabel.insertAdjacentHTML('beforeend', '<span>*<span/>')
       }
       if (input.step !== null) newField.setAttribute('step', input.step)
-      if (input.input === 'select') newField = await commonModifyDOM.createSelectInput(input.field, newField, 'create')
+      if (input.input === 'select') newField = await commonModifyDOM.createSelectInput(input.field, newField, 'create', input.options)
       if (input.popup) {
         newField.addEventListener('click', function (e) {
           e.preventDefault()
@@ -84,6 +84,7 @@ export const commonModifyDOM = {
   updateAllViewInputs: function (fields, dataToFill) {
     const viewDetails = document.querySelector('#view-details')
     const viewImage = document.querySelector('#view-image')
+    viewImage.innerHTML = ''
     for (const key in dataToFill) {
       if (key === 'details') {
         viewDetails.innerHTML = ''
@@ -91,7 +92,7 @@ export const commonModifyDOM = {
         viewDetails.insertAdjacentHTML('beforeend', detailsHTML)
       }
       if (dataToFill.productImage) {
-        viewImage.innerHTML = `<img src='${dataToFill.productImage}' />`
+        viewImage.innerHTML = `<a href='${dataToFill.productImage}' target='_blank'><img src='${dataToFill.productImage}' />`
       }
       const inputElement = document.getElementById(`view-input-${key}`)
       if (inputElement) {
@@ -142,11 +143,22 @@ export const commonModifyDOM = {
       return detailsHTML
     } else { return '' }
   },
-  createSelectInput: async function (type, selectElement, mode) {
+  createSelectInput: async function (type, selectElement, mode, options) {
     const optionDefault = document.createElement('option')
     optionDefault.setAttribute('id', 0)
     optionDefault.textContent = 'Please select'
     selectElement.appendChild(optionDefault)
+    if (options !== undefined) {
+      const optionsArray = options.split(',')
+      optionsArray.forEach(opt => {
+        const option = document.createElement('option')
+        option.setAttribute('id', `${opt}`)
+        option.setAttribute('data', `${opt}`)
+        option.textContent = opt
+        selectElement.appendChild(option)
+        return true
+      })
+    }
     if (type === 'status') {
       const orderStatus = await commonActions.getEntity('orderstatus')
       orderStatus.map((status) => {
@@ -290,7 +302,7 @@ export const commonModifyDOM = {
     const newInput = document.createElement(result.input)
     newInput.setAttribute('type', result.type)
     newInput.setAttribute('id', result.field)
-    if (result.input === 'select') await commonModifyDOM.createSelectInput(result.field, newInput, 'edit')
+    if (result.input === 'select') await commonModifyDOM.createSelectInput(result.field, newInput, 'edit', result.options)
     if (!result.editable) newInput.setAttribute('readonly', true)
     if (result.step !== null) newInput.setAttribute('step', result.step)
     if (result.editable && result.popup) {

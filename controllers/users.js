@@ -33,6 +33,7 @@ export class UsersController {
 
   create = async (req, res, next) => {
     try {
+      req.body.password = req.body.password.toString()
       const resultValidation = await validateUser(req.body)
       if (resultValidation.error) throw new ValidationError(JSON.parse(resultValidation.error.message))
 
@@ -40,7 +41,6 @@ export class UsersController {
       resultValidation.data.hashedPassword = await bcrypt.hash(resultValidation.data.password, configurationEncrypt.SALT_ROUNDS)
       resultValidation.data.registerAt = getFormattedDateTime()
       resultValidation.data.active = globalSettings.ACTIVE_USERS_AT_REGISTER
-      resultValidation.data.usertype = globalSettings.DEFAULT_GROUP_NEW_USER
 
       const result = await this.usersModel.create(resultValidation.data)
       if (!result) throw new ValidationError('Can\'t create user')

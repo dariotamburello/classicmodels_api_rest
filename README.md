@@ -1,6 +1,11 @@
 # NODE API REST
 API REST for E-commerce database, with managment backoffice dev in EJM front-end (see documentation here: )
 
+## ACCESS
+URL: https://classicmodels-api-rest.vercel.app
+User: test
+Pass: test123
+
 ## IMPLEMENTATION DETAILS
 - MVC design pattern
 - MySQL connections and querys

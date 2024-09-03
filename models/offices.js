@@ -1,51 +1,12 @@
 import mysql from 'mysql2/promise'
 import { configuration } from '../configuration/dbConnections.js'
 import { DBError } from '../utils/errorTypes.js'
-// import { OrderModel } from './orders.js'
-// import { generateCheckNumber } from '../helpers/payments.js'
 
 const connection = await mysql.createConnection(configuration)
 
 export class OfficeModel {
   static async getAll () {
     try {
-      // const orders = await OrderModel.getAll('')
-      // // console.log(orders)
-      // orders.map(async (order) => {
-      //   const orderNumber = order.orderNumber
-      //   const total = order.total
-      //   const status = order.status
-      //   let payStatus = 3
-      //   if (status === 'efc52444-656a-11ef-91c8-00ff57cc6be4') {
-      //     payStatus = 1
-      //   }
-      //   const customer = order.customerNumber
-      //   const paymentDate = new Date(order.orderDate).toISOString().slice(0, 19).replace('T', ' ') // Format YYYY-MM-DD HH:MM:SS
-
-      //   const paymentmethod = order.paymentMethod
-      //   const checknumber = generateCheckNumber()
-      //   console.log(customer, checknumber, paymentDate, total, payStatus, paymentmethod)
-
-      //   await connection.query(
-      //     `INSERT INTO payments (
-      //     customerNumber,
-      //     checkNumber,
-      //     paymentDate,
-      //     amount,
-      //     paymentStatus,
-      //     paymentMethod) VALUES (
-      //     ${customer}, '${checknumber}', '${paymentDate}', ${total}, '${payStatus}', '${paymentmethod}' )
-      //     `
-      //   )
-
-      //   await connection.query(
-      //     `UPDATE orders
-      //     set paymentCheckNumber = '${checknumber}'
-      //     WHERE orderNumber = ${orderNumber}`
-      //   )
-
-      //   return true
-      // })
       const [offices] = await connection.query(
         'SELECT * FROM offices;'
       )

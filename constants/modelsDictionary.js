@@ -95,7 +95,7 @@ export const PaymentMethodsDictionary = {
   modelForm: [
     { field: 'id', title: 'ID', input: 'input', type: 'text', create: false, editable: false, required: true },
     { field: 'type', title: 'Type', input: 'input', type: 'text', create: true, editable: true, required: true },
-    { field: 'enabled', title: 'Enabled', input: 'input', type: 'boolean', create: true, editable: true, required: true }
+    { field: 'enabled', title: 'Enabled', input: 'select', type: 'text', options: '0,1', create: true, editable: true, required: true }
   ]
 }
 
@@ -135,14 +135,14 @@ export const ProductLinesDictionary = {
 export const UsersDictionary = {
   entityName: 'Users',
   stringURL: 'users',
-  tableTitles: ['Username', 'Register date', 'Last login', 'Active', 'Type'],
+  tableTitles: ['Username', 'Register date', 'Last login', 'Active', 'Group'],
   modelForm: [
     { field: 'id', title: 'ID', input: 'input', type: 'text', create: false, editable: false, required: true },
     { field: 'username', title: 'Username', input: 'input', type: 'text', create: true, editable: false, required: true },
     { field: 'password', title: 'Password', input: 'input', type: 'password', create: true, editable: true, required: true },
-    { field: 'registerAt', title: 'Register date', input: 'input', type: 'datetime-local', create: true, editable: true, required: true },
-    { field: 'lastlogin', title: 'Last login', input: 'input', type: 'datetime-local', create: true, editable: true, required: false },
-    { field: 'active', title: 'Active', input: 'input', type: 'text', create: true, editable: true, required: true },
-    { field: 'usertype', title: 'Type', input: 'input', type: 'text', create: true, editable: true, required: true }
+    { field: 'registerAt', title: 'Register date', input: 'input', type: 'datetime-local', create: false, editable: false, required: true },
+    { field: 'lastlogin', title: 'Last login', input: 'input', type: 'datetime-local', create: false, editable: false, required: false },
+    { field: 'active', title: 'Active', input: 'select', type: 'text', options: 'Active,Disabled', create: false, editable: true, required: false },
+    { field: 'usergroup', title: 'Group', input: 'select', type: 'text', options: 'User,Moderator,Admin', create: true, editable: true, required: false }
   ]
 }
