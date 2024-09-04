@@ -206,15 +206,20 @@
         $downloadPDF.addEventListener("click", async (e) => {
             e.preventDefault()
             Notiflix.Loading.hourglass()
-            const response = await fetch(`/dashboard/download?entity=${stringURL}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            const pdfUrl = await response.json()
-            Notiflix.Loading.remove()
-            commonModifyDOM.showPDF(pdfUrl)
+            try {
+                const response = await fetch(`/dashboard/download?entity=${stringURL}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                const pdfUrl = await response.json()
+                Notiflix.Loading.remove()
+                commonModifyDOM.showPDF(pdfUrl)
+            } catch (error) {
+                Notiflix.Loading.remove()
+                Notiflix.Notify.failure('Error during PDF download:', error)
+            }
         })
 
         const actions = {
