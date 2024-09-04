@@ -6,12 +6,19 @@
     const pagination = data.pagination
     const entityName = data.dictionary.entityName
     const stringURL = data.dictionary.stringURL
+    const pdfReport = data.pdfReport
 %>
 
 <div class="home-content">
     <section class="content" id="products">
         <div class="header">
-            <div class="title">All <%= entityName %></div>
+            <div class="title">All <%= entityName %>
+                <span>
+                    <% if (pdfReport) { %>
+                        <a href='#' id="download-pdf">[Download PDF]</a>
+                    <% } %>
+                </span>
+            </div>
             <button id="create-new-order" class="pure-button pure-button-primary">New <%= entityName %></button>
         </div>
         <div class="bodyTable">
@@ -26,6 +33,9 @@
 <%- include('./components/popup-create'); -%>
 <div id="overlay-2" class="overlay"></div>
 <%- include('./components/popup-select'); -%>
+
+<%- include('./components/dialog-pdf'); -%>
+
 
 <script type="module">
     // import Notiflix from '/js/libs/notiflix.js'
@@ -70,6 +80,8 @@
         const closePopupSelect = document.querySelector('#close-select-popup')
         const selectItem = document.querySelector('#selectItem')
         const tableBodySelect = document.querySelector('#table-body-select')
+
+        const $downloadPDF = document.querySelector('#download-pdf')
 
         // LISTENERS
         buttonCreateNew.addEventListener("click", async function() {
@@ -189,6 +201,20 @@
                 },
                 {okButtonBackground: '#ca3c3c'},
             )
+        })
+
+        $downloadPDF.addEventListener("click", async (e) => {
+            e.preventDefault()
+            Notiflix.Loading.hourglass()
+            const response = await fetch(`/dashboard/download?entity=${stringURL}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const pdfUrl = await response.json()
+            Notiflix.Loading.remove()
+            commonModifyDOM.showPDF(pdfUrl)
         })
 
         const actions = {

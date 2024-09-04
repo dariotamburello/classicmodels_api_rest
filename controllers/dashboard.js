@@ -1,4 +1,5 @@
 import { CustomersDictionary, OfficesDictionary, OrdersDictionary, OrderStatusDictionary, PaymentMethodsDictionary, PaymentsDictionary, PaymentStatusDictionary, ProductLinesDictionary, ProductsDictionary, UsersDictionary } from '../constants/modelsDictionary.js'
+import { options } from '../constants/pdfOptions.js'
 import { handlePagination } from '../middleware/pagination.js'
 import { CustomerModel } from '../models/customers.js'
 import { OfficeModel } from '../models/offices.js'
@@ -12,6 +13,17 @@ import { ProductLineModel } from '../models/productLines.js'
 import { ProductModel } from '../models/products.js'
 import { UsersModel } from '../models/users.js'
 import { AppError } from '../utils/errorTypes.js'
+
+// const pdf = require('pdf-creator-node')
+// const fs = require('fs')
+// const path = require('path')
+
+import { fileURLToPath } from 'url'
+import pdf from 'pdf-creator-node'
+import fs from 'fs'
+import path from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
 
 export class DashboardController {
   dashboard = async (req, res, next) => {
@@ -134,7 +146,8 @@ export class DashboardController {
             prevPage,
             nextPage,
             currentPage
-          }
+          },
+          pdfReport: true
         }
       }, (err, html) => {
         if (err) throw new Error(err)
@@ -279,7 +292,8 @@ export class DashboardController {
             prevPage,
             nextPage,
             currentPage
-          }
+          },
+          pdfReport: true
         }
       }, (err, html) => {
         if (err) throw new Error(err)
@@ -538,6 +552,49 @@ export class DashboardController {
       })
     } catch (error) {
       next(new AppError(error, `[${this.constructor.name}] ${this.paymentsView.name}.`))
+    }
+  }
+
+  generatePdf = async (req, res, next) => {
+    const __dirname = path.dirname(__filename)
+    const html = fs.readFileSync(path.join(__dirname, '../views/template-pdf.html'), 'utf-8')
+    const filename = Math.random().toString().substring(2) + '_doc' + '.pdf'
+    let document
+
+    if (req.query.entity === 'products') {
+      const products = await ProductModel.getAllComplete('')
+      const productsInTable = products.sort((a, b) => b.id - a.id).map(({ id, ...rest }) => ({
+        ...rest
+      }))
+      document = {
+        html,
+        data: {
+          titles: ProductsDictionary.tableTitles,
+          entity: productsInTable
+        },
+        path: './docs/' + filename
+      }
+    } else if (req.query.entity === 'customers') {
+      const customers = await CustomerModel.getAll('')
+      const customersInTable = customers.sort((a, b) => b.id - a.id).map(({ customerNumber, contactLastName, contactFirstName, phone, addressLine2, state, postalCode, salesRepEmployeeNumber, creditLimit, ...rest }) => ({
+        ...rest
+      }))
+      document = {
+        html,
+        data: {
+          titles: CustomersDictionary.tableTitles,
+          entity: customersInTable
+        },
+        path: './docs/' + filename
+      }
+    }
+
+    const pdfFile = await pdf.create(document, options)
+    if (pdfFile) {
+      const filepath = '/docs/' + filename
+      res.json({ filepath })
+    } else {
+      res.status(404)
     }
   }
 }

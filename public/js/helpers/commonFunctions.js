@@ -313,6 +313,15 @@ export const commonModifyDOM = {
     }
     newInput.className = 'pure-input-1 editInput'
     return newInput
+  },
+  showPDF: (pdfPath) => {
+    const pdfIframe = document.getElementById('pdfIframe')
+    pdfIframe.src = pdfPath.filepath
+    const downloadLink = document.getElementById('downloadPdf')
+    downloadLink.href = pdfPath.filepath
+
+    const modal = document.getElementById('pdfModal')
+    modal.showModal()
   }
 }
 

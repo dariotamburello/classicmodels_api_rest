@@ -1,0 +1,19 @@
+<dialog id="pdfModal" class="modal">
+    <div class="modal-header">
+        <a id="downloadPdf" href="#" download class="btn">Download PDF</a>
+        <a href="#" class="modal-close btn">Close</a>
+    </div>
+    <div class="modal-content">
+        <iframe id="pdfIframe" frameborder="0"></iframe>
+    </div>
+</dialog>
+
+<script>
+    const $downloadPDF = document.querySelector('#download-pdf')
+    const $dialogPDF = document.querySelector('#pdfModal')
+    const $btnCloseDialog = document.querySelector('.modal-close')
+
+    $btnCloseDialog.addEventListener("click", () => {
+        $dialogPDF.close();
+    })
+</script>
