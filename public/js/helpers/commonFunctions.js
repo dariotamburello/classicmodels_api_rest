@@ -315,7 +315,7 @@ export const commonModifyDOM = {
     return newInput
   },
   showPDF: (pdfPath) => {
-    console.log(pdfPath)
+    console.log(pdfPath.filepath)
     const pdfIframe = document.getElementById('pdfIframe')
     pdfIframe.src = pdfPath.filepath
     const downloadLink = document.getElementById('downloadPdf')

@@ -576,7 +576,7 @@ export class DashboardController {
             titles: ProductsDictionary.tableTitles,
             entity: productsInTable
           },
-          path: './docs/' + filename
+          path: './public/docs/' + filename
         }
       } else if (req.query.entity === 'customers') {
         const customers = await CustomerModel.getAll('')
@@ -598,13 +598,13 @@ export class DashboardController {
       // return res.json(document.path)
 
       console.time()
-      const pdfFile = await pdf.create(document, options)
       console.timeEnd()
+      const pdfFile = await pdf.create(document, options)
       if (pdfFile) {
         const filepath = '/docs/' + filename
-        return res.json(filepath)
+        return res.json({ filepath })
       } else {
-        return res.json(document.path, '404')
+        return res.json('404')
       }
     } catch (error) {
       return next(error)
