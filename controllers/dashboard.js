@@ -557,11 +557,16 @@ export class DashboardController {
 
   generatePdf = async (req, res, next) => {
     try {
+      console.time()
       const __dirname = path.dirname(__filename)
       const html = fs.readFileSync(path.join(__dirname, '../views/template-pdf.html'), 'utf-8')
+      console.timeEnd()
       const filename = Math.random().toString().substring(2) + '_doc' + '.pdf'
       let document
 
+      return res.json('part1')
+
+      console.time()
       if (req.query.entity === 'products') {
         const products = await ProductModel.getAllComplete('')
         const productsInTable = products.sort((a, b) => b.id - a.id).map(({ id, ...rest }) => ({
@@ -589,7 +594,8 @@ export class DashboardController {
           path: './docs/' + filename
         }
       }
-
+      console.timeEnd()
+      console.time()
       const pdfFile = await pdf.create(document, options)
       if (pdfFile) {
         const filepath = '/docs/' + filename
@@ -597,6 +603,7 @@ export class DashboardController {
       } else {
         res.status(404)
       }
+      console.timeEnd()
     } catch (error) {
       return next(error)
     }

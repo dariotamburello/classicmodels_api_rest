@@ -1,17 +1,21 @@
 import { AppError, AuthError, BusinessError, DBError, DataError, RenderError, ValidationError } from '../utils/errorTypes.js'
+import { handleErrorLog } from '../helpers/handleLogs.js'
 
 export const errorHandler = (error, req, res, next) => {
+  const route = `${req.url}, ${req.method}`
+  const header = req.rawHeaders
+
   if (error instanceof AppError) {
-    console.log(error)
+    handleErrorLog(error, route, header)
     res.redirect('/')
   }
 
   if (error instanceof BusinessError) {
-    console.log(error)
+    handleErrorLog(error, route, header)
   }
 
   if (error instanceof DBError) {
-    console.log(error)
+    handleErrorLog(error, route, header)
     res.status(error.statusCode).json(errorFormatToFront(error))
   }
 
@@ -20,17 +24,17 @@ export const errorHandler = (error, req, res, next) => {
   }
 
   if (error instanceof ValidationError) {
-    console.log(error)
+    handleErrorLog(error, route, header)
     res.status(200).json(errorFormatToFront(error))
   }
 
   if (error instanceof AuthError) {
-    console.log(error)
+    handleErrorLog(error, route, header)
     res.status(401).json(errorFormatToFront(error))
   }
 
   if (error instanceof RenderError) {
-    console.log(error)
+    handleErrorLog(error, route, header)
   }
 
   next()

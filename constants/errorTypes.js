@@ -6,5 +6,6 @@ export const errorTypes = {
   ERROR_LOGIN: 'Wrong user/pass',
   ERROR_ACCESS_DENIED: 'Access denied.',
   ERROR_ROLL_BACK: 'Rollback error',
-  ERROR_SESSION: 'Session error'
+  ERROR_SESSION: 'Session error',
+  ERROR_RENDER: 'Render error'
 }
