@@ -594,7 +594,7 @@ export class DashboardController {
       }
       console.timeEnd()
 
-      // console.log(document)
+      console.log(document)
       // return res.json(document.path)
 
       console.time()
