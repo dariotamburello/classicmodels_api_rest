@@ -560,11 +560,9 @@ export class DashboardController {
       console.time()
       const __dirname = path.dirname(__filename)
       const html = fs.readFileSync(path.join(__dirname, '../views/template-pdf.html'), 'utf-8')
-      console.timeEnd()
       const filename = Math.random().toString().substring(2) + '_doc' + '.pdf'
       let document
-
-      return res.json('part1')
+      console.timeEnd()
 
       console.time()
       if (req.query.entity === 'products') {
@@ -595,6 +593,7 @@ export class DashboardController {
         }
       }
       console.timeEnd()
+
       console.time()
       const pdfFile = await pdf.create(document, options)
       if (pdfFile) {
