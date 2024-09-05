@@ -1,4 +1,7 @@
-node_modules
+node_modules/*
+!node_modules/pdf-creator-node
+node_modules/pdf-creator-node/*
+!node_modules/pdf-creator-node/index.js
 .env
 /docs/*
 /public/docs/
