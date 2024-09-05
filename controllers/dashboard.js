@@ -592,20 +592,20 @@ export class DashboardController {
           path: './docs/' + filename
         }
       }
+      console.timeEnd()
 
       // console.log(document)
       // return res.json(document.path)
 
-      console.timeEnd()
       console.time()
       const pdfFile = await pdf.create(document, options)
+      console.timeEnd()
       if (pdfFile) {
         const filepath = '/docs/' + filename
-        res.json({ filepath })
+        return res.json(filepath)
       } else {
-        res.json(document.path, '404')
+        return res.json(document.path, '404')
       }
-      console.timeEnd()
     } catch (error) {
       return next(error)
     }
