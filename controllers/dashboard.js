@@ -594,7 +594,7 @@ export class DashboardController {
       }
 
       // console.log(document)
-      return res.json(document.path)
+      // return res.json(document.path)
 
       console.timeEnd()
       console.time()
@@ -603,7 +603,7 @@ export class DashboardController {
         const filepath = '/docs/' + filename
         res.json({ filepath })
       } else {
-        res.status(404)
+        res.json(document.path, '404')
       }
       console.timeEnd()
     } catch (error) {
