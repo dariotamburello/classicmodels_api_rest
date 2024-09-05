@@ -576,7 +576,7 @@ export class DashboardController {
             titles: ProductsDictionary.tableTitles,
             entity: productsInTable
           },
-          path: './public/docs/' + filename
+          path: path.join(__dirname, '../public/docs/') + filename
         }
       } else if (req.query.entity === 'customers') {
         const customers = await CustomerModel.getAll('')
@@ -594,7 +594,7 @@ export class DashboardController {
       }
       console.timeEnd()
 
-      console.log(document)
+      console.log(document.path)
       // return res.json(document.path)
 
       console.time()
