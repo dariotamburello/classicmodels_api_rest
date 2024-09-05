@@ -147,7 +147,7 @@ export class DashboardController {
             nextPage,
             currentPage
           },
-          pdfReport: true
+          pdfReport: false
         }
       }, (err, html) => {
         if (err) throw new Error(err)
@@ -293,7 +293,7 @@ export class DashboardController {
             nextPage,
             currentPage
           },
-          pdfReport: true
+          pdfReport: false
         }
       }, (err, html) => {
         if (err) throw new Error(err)
