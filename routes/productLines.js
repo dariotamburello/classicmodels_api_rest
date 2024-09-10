@@ -6,10 +6,10 @@ export const createProductLineRouter = ({ productLineModel }) => {
   const productLineRouter = new Router()
   const productLineController = new ProductLineController({ productLineModel })
 
-  productLineRouter.get('/', [validateSession, isAdmin], productLineController.getAll)
+  productLineRouter.get('/', productLineController.getAll)
   productLineRouter.post('/', [validateSession, isAdmin], productLineController.create)
 
-  productLineRouter.get('/:id', [validateSession, isAdmin], productLineController.getById)
+  productLineRouter.get('/:id', productLineController.getById)
   productLineRouter.delete('/:id', [validateSession, isAdmin], productLineController.delete)
   productLineRouter.patch('/:id', [validateSession, isAdmin], productLineController.update)
 
