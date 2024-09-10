@@ -123,7 +123,7 @@ export class DashboardController {
             product.productCode.toLowerCase().includes(valueToSearch.toLowerCase()) ||
             product.productName.toLowerCase().includes(valueToSearch.toLowerCase()) ||
             product.productDescription.toLowerCase().includes(valueToSearch.toLowerCase()) ||
-            product.productLines.toLowerCase().includes(valueToSearch.toLowerCase())
+            product.title.toLowerCase().includes(valueToSearch.toLowerCase())
           )
         })
       }
