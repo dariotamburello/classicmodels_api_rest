@@ -124,11 +124,13 @@ export const OrderStatusDictionary = {
 export const ProductLinesDictionary = {
   entityName: 'Product lines',
   stringURL: 'productlines',
-  tableTitles: ['Title', 'Description'],
+  tableTitles: ['Title', 'Description', 'Image URL', 'Identifier'],
   modelForm: [
     { field: 'id', title: 'ID', input: 'input', type: 'text', create: false, editable: false, required: true },
     { field: 'title', title: 'Product line', input: 'input', type: 'text', create: true, editable: true, required: true },
-    { field: 'description', title: 'Description', input: 'textarea', type: 'text', create: true, editable: true, required: false }
+    { field: 'description', title: 'Description', input: 'textarea', type: 'text', create: true, editable: true, required: false },
+    { field: 'imageurl', title: 'Image Url', input: 'input', type: 'text', create: true, editable: true, required: false, image: true },
+    { field: 'identifier', title: 'Identifier', input: 'input', type: 'text', create: true, editable: true, required: false }
   ]
 }
 

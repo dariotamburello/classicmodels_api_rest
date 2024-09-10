@@ -35,16 +35,18 @@ export class ProductLineModel {
       const {
         id,
         title,
-        description
+        description,
+        imageurl,
+        identifier
       } = input
 
       const existProductLine = await this.getById({ id })
       if (existProductLine.length > 0) return false
 
       await connection.query(
-        `INSERT INTO productlines (id, title, description)
-        VALUES (?, ?, ?);`,
-        [id, title, description]
+        `INSERT INTO productlines (id, title, description, imageurl, identifier)
+        VALUES (?, ?, ?, ?, ?);`,
+        [id, title, description, imageurl, identifier]
       )
       return input
     } catch (error) {
@@ -72,15 +74,19 @@ export class ProductLineModel {
 
       const newProductLine = {
         title: input.title ?? existProductLine[0].title,
-        description: input.description ?? existProductLine[0].description
+        description: input.description ?? existProductLine[0].description,
+        imageurl: input.imageurl ?? existProductLine[0].imageurl,
+        identifier: input.identifier ?? existProductLine[0].identifier
       }
 
       await connection.query(
         `UPDATE productlines 
-        SET title = ?, description = ?
+        SET title = ?, description = ?, imageurl = ?, identifier = ?
         WHERE id = ? ;`,
         [
-          newProductLine.title, newProductLine.description, id
+          newProductLine.title, newProductLine.description,
+          newProductLine.imageurl, newProductLine.identifier,
+          id
         ]
       )
 

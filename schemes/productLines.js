@@ -10,6 +10,18 @@ const productLinesScheme = z.object({
     .string({
       invalid_type_error: 'Text description must be a string'
     })
+    .optional(),
+  imageurl: z
+    .string({
+      invalid_type_error: 'Image url must be a valid URL.'
+    }).url({
+      message: 'Image url must be a valid URL.'
+    })
+    .optional(),
+  identifier: z
+    .string({
+      invalid_type_error: 'Identifier must be a string'
+    })
     .optional()
 })
 
