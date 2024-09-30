@@ -1,4 +1,3 @@
-// import { updateProductLines } from '../schemes/product.js'
 import crypto from 'node:crypto'
 import { validatePartialProductLines, validateProductLines } from '../schemes/productLines.js'
 import { DataError, ValidationError } from '../utils/errorTypes.js'

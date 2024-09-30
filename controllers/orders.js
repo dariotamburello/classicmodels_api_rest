@@ -1,4 +1,4 @@
-import { OrderDetailsModel } from '../models/orderDetails.js'
+import { defaultDataModel } from '../server-data-model.js'
 import { getFormattedDateTime } from '../helpers/datetimes.js'
 import { validateOrder, validatePartialOrder } from '../schemes/order.js'
 import { refreshScheme, validateOrderDetail } from '../schemes/orderDetail.js'
@@ -26,7 +26,7 @@ export class OrderController {
     try {
       const order = await this.orderModel.getById({ id })
       if (order.length > 0 && complete === 'true') {
-        const orderDetails = await OrderDetailsModel.getAllComplete({ orderNumber: id })
+        const orderDetails = await defaultDataModel.OrderDetailsModel.getAllComplete({ orderNumber: id })
         order[0].details = orderDetails
       }
       res.json(order)
@@ -39,7 +39,8 @@ export class OrderController {
     try {
       const resultValidation = await validateOrder(req.body)
       if (resultValidation.error) throw new ValidationError(JSON.parse(resultValidation.error.message))
-
+      const previousOrder = await this.orderModel.getLast()
+      resultValidation.data.orderNumber = previousOrder[0].orderNumber + 1
       resultValidation.data.orderDate = getFormattedDateTime()
       const order = await this.orderModel.create(resultValidation.data)
       if (!order) throw new DataError('Can\'t create order.')
@@ -57,7 +58,7 @@ export class OrderController {
           }
           validation.push(orderDetailsresult.data)
         }
-        const orderDetailsCreate = await OrderDetailsModel.create(validation)
+        const orderDetailsCreate = await defaultDataModel.OrderDetailsModel.create(validation)
         if (!orderDetailsCreate) {
           await rollbackOrder(this, order.orderNumber)
           throw new DataError('Can\'t create order details.')

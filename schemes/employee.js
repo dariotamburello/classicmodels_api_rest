@@ -1,6 +1,5 @@
 import z from 'zod'
-import { EmployeeModel } from '../models/employees.js'
-import { OfficeModel } from '../models/offices.js'
+import { defaultDataModel } from '../server-data-model.js'
 
 const employeeScheme = z.object({
   lastName: z.string({
@@ -58,16 +57,16 @@ export function validatePartialEmployee (object) {
 }
 
 async function checkIfEmailIsValid (email) {
-  const valid = await EmployeeModel.getByEmail(email)
+  const valid = await defaultDataModel.EmployeeModel.getByEmail(email)
   return valid.length === 0
 }
 
 async function checkIfOfficeCodeIsValid (officeCode) {
-  const valid = await OfficeModel.getById({ id: officeCode })
+  const valid = await defaultDataModel.OfficeModel.getById({ id: officeCode })
   return valid.length > 0
 }
 
 async function checkIfEmployeeIsValid (employeeNumber) {
-  const valid = await EmployeeModel.getById({ id: employeeNumber })
+  const valid = await defaultDataModel.EmployeeModel.getById({ id: employeeNumber })
   return valid.length > 0
 }

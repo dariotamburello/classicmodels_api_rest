@@ -1,3 +1,4 @@
+import crypto from 'node:crypto'
 import { validateOffice, validatePartialOffice } from '../schemes/office.js'
 import { DataError, ValidationError } from '../utils/errorTypes.js'
 
@@ -29,8 +30,10 @@ export class OfficeController {
 
   create = async (req, res, next) => {
     try {
+      req.body.postalCode = req.body?.postalCode?.toString()
       const resultValidation = validateOffice(req.body)
-      if (resultValidation.error) throw new ValidationError(JSON.parse(resultValidation.error.message)[0])
+      if (resultValidation.error) throw new ValidationError(JSON.parse(resultValidation.error.message))
+      resultValidation.data.id = crypto.randomUUID()
       const office = await this.officeModel.create(resultValidation.data)
       if (!office) throw new DataError('Can\'t create office.')
       res.json(office)

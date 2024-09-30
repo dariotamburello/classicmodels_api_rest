@@ -1,3 +1,4 @@
+import crypto from 'node:crypto'
 import { validateOrderStatus, validatePartialOrderStatus } from '../schemes/orderStatus.js'
 import { DataError, ValidationError } from '../utils/errorTypes.js'
 
@@ -29,6 +30,7 @@ export class OrderStatusController {
     try {
       const resultValidation = validateOrderStatus(req.body)
       if (resultValidation.error) throw new ValidationError(JSON.parse(resultValidation.error.message))
+      resultValidation.data.id = crypto.randomUUID()
       const orderStatus = await this.orderStatusModel.create(resultValidation.data)
       if (!orderStatus) throw new DataError('Can\'t create order status.')
       res.json(orderStatus)

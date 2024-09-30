@@ -1,11 +1,6 @@
 import z from 'zod'
 
 const paymentStatusScheme = z.object({
-  id: z
-    .string({
-      invalid_type_error: 'Status id must be a string',
-      required_error: 'Status id is required'
-    }),
   title: z
     .string({
       invalid_type_error: 'Status title must be a string',

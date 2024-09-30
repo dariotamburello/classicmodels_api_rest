@@ -1,5 +1,5 @@
 import z from 'zod'
-import { EmployeeModel } from '../models/employees.js'
+import { EmployeeModel } from '../models/mysql/employees.js'
 
 const customerScheme = z.object({
   customerName: z.string({

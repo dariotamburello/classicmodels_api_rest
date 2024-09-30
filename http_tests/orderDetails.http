@@ -1,35 +1,35 @@
-@adminToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZkYzdmMGJiLTcwNzktNDk3Zi05ZTJmLThkNDRiZWZjNGJkMyIsInVzZXJuYW1lIjoiZHRhbWJ1cmVsbG8iLCJpYXQiOjE3MjMzOTQ1ODYsImV4cCI6MTcyMzM5ODE4Nn0.ny_kIUbfajs5DfGoyqH3QJAp_s3DWIHt1Uplnm07qfw
+@adminToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZkYzdmMGJiLTcwNzktNDk3Zi05ZTJmLThkNDRiZWZjNGJkMyIsInVzZXJuYW1lIjoiZHRhbWJ1cmVsbG8iLCJpYXQiOjE3Mjc3MDYxMjksImV4cCI6MTcyNzcwOTcyOX0.a965ggiI1hxrDT1Zb0-9kPlfUo4PORzRgQXmPA1fVrQ
 @userToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY3NmZhNWJkLTNkYmEtNDBlYS05MjE5LTI0NmQzNjE0ZDNiMiIsInVzZXJuYW1lIjoibWlkdWRldiIsImlhdCI6MTcyMzM5MjE1NCwiZXhwIjoxNzIzMzk1NzU0fQ.d6J0xeoUFxIn-YnEpAzT1qOn5lPEaAhoQT9LSAG2m-U
 @admin=access_token={{adminToken}}
 @user=access_token={{userToken}}
 
 ### GET all order details
 GET http://localhost:3000/orderDetails
-Cookie: {{user}}
+Cookie: {{admin}}
 
 ### GET order details by customerNumber
 GET http://localhost:3000/orderDetails?orderNumber=10103
-Cookie: {{user}}
+Cookie: {{admin}}
 
 ### GET orders details by id
-GET http://localhost:3000/orderDetails/10105?orderLineNumber=6
+GET http://localhost:3000/orderDetails/10103?orderLineNumber=17
 Cookie: {{user}}
 
 ### CREATE new order details
 POST http://localhost:3000/orderDetails
-Cookie: {{user}}
+Cookie: {{admin}}
 Content-Type: application/json
 
 [{
     "orderNumber": 10103,
-    "productCode": "S18_2581",
+    "productId": "193b7ea7-6553-11ef-91c8-00ff57cc6be4",
     "quantityOrdered": 46,
     "priceEach": 86.31,
     "orderLineNumber": 17
 },
 {
     "orderNumber": 10103,
-    "productCode": "S24_1785",
+    "productId": "1939c861-6553-11ef-91c8-00ff57cc6be4",
     "quantityOrdered": 16,
     "priceEach": 15.20,
     "orderLineNumber": 18
@@ -43,10 +43,10 @@ DELETE http://localhost:3000/orderDetails/10103?orderLineNumber=18
 Cookie: {{admin}}
 
 ### Update a order details
-PATCH http://localhost:3000/orderDetails/10103?orderLineNumber=10
+PATCH http://localhost:3000/orderDetails/10103?orderLineNumber=17
 Cookie: {{admin}}
 Content-Type: application/json
 
 {
-    "priceEach": 94.5
+    "quantityOrdered": 2
 }

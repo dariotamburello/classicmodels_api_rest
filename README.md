@@ -8,7 +8,9 @@ Pass: test123
 
 ## IMPLEMENTATION DETAILS
 - MVC design pattern
+- Data models select from .env 
 - MySQL connections and querys
+- MongoDB connections and querys
 - Complete structure for PRODUCTS / ORDER / PAYMENT / CUSTOMERS
 - Data structure with schemes 'Zod' (https://zod.dev)
 - Safe routes with user/groups security

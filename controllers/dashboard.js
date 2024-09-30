@@ -1,17 +1,7 @@
 import { CustomersDictionary, OfficesDictionary, OrdersDictionary, OrderStatusDictionary, PaymentMethodsDictionary, PaymentsDictionary, PaymentStatusDictionary, ProductLinesDictionary, ProductsDictionary, UsersDictionary } from '../constants/modelsDictionary.js'
 import { options } from '../constants/pdfOptions.js'
 import { handlePagination } from '../middleware/pagination.js'
-import { CustomerModel } from '../models/customers.js'
-import { OfficeModel } from '../models/offices.js'
-import { OrderDetailsModel } from '../models/orderDetails.js'
-import { OrderModel } from '../models/orders.js'
-import { OrderStatusModel } from '../models/orderStatus.js'
-import { PaymentMethodsModel } from '../models/paymentMethods.js'
-import { PaymentsModel } from '../models/payments.js'
-import { PaymentStatusModel } from '../models/paymentStatus.js'
-import { ProductLineModel } from '../models/productLines.js'
-import { ProductModel } from '../models/products.js'
-import { UsersModel } from '../models/users.js'
+import { defaultDataModel } from '../server-data-model.js'
 import { AppError } from '../utils/errorTypes.js'
 
 // const pdf = require('pdf-creator-node')
@@ -31,7 +21,7 @@ export class DashboardController {
       const { user } = req.session
       const username = user.username
 
-      const orders = await OrderModel.getAll('')
+      const orders = await defaultDataModel.OrderModel.getAll('')
 
       const currentYear = new Date().getFullYear()
       const currentMonth = new Date().getMonth()
@@ -50,7 +40,7 @@ export class DashboardController {
         return accumulator
       }, { totalAmount: 0, orderCount: 0, noPickUpDateCount: 0, disputedOrders: 0 })
 
-      const ordersComplete = await OrderModel.getAllComplete('')
+      const ordersComplete = await defaultDataModel.OrderModel.getAllComplete('')
       const latestOrders = ordersComplete
         .sort((a, b) => b.orderNumber - a.orderNumber)
         .slice(0, 10)
@@ -59,11 +49,10 @@ export class DashboardController {
         ...rest
       }))
 
-      const orderDetails = await OrderDetailsModel.getAllComplete('')
+      const orderDetails = await defaultDataModel.OrderDetailsModel.getAllComplete('')
       const topSellingProducts = Object.values(
         orderDetails.reduce((acc, orderDetail) => {
           const { productId, productName, productImage, quantityOrdered, buyPrice } = orderDetail
-
           if (!acc[productId]) {
             acc[productId] = {
               productId,
@@ -113,7 +102,7 @@ export class DashboardController {
       const { user } = req.session
       const username = user.username
 
-      let productsComplete = await ProductModel.getAllComplete()
+      let productsComplete = await defaultDataModel.ProductModel.getAllComplete()
       productsComplete.sort((a, b) => b.id - a.id)
 
       if (req.query.search) {
@@ -131,7 +120,7 @@ export class DashboardController {
       const { dataPaged, nextPage, prevPage, currentPage } = pagination(productsComplete, req.query.page, 10)
       productsComplete = dataPaged
 
-      const productsDisplayInTable = productsComplete.map(({ ...rest }) => ({
+      const productsDisplayInTable = productsComplete.map(({ _id, ...rest }) => ({
         ...rest
       }))
 
@@ -164,7 +153,7 @@ export class DashboardController {
       const { user } = req.session
       const username = user.username
 
-      let ordersComplete = await OrderModel.getAllComplete('')
+      let ordersComplete = await defaultDataModel.OrderModel.getAllComplete('')
       ordersComplete.sort((a, b) => b.orderNumber - a.orderNumber)
 
       if (req.query.search) {
@@ -217,13 +206,13 @@ export class DashboardController {
       const { user } = req.session
       const username = user.username
 
-      let payments = await PaymentsModel.getAllComplete()
+      let payments = await defaultDataModel.PaymentsModel.getAllComplete()
       payments.sort((a, b) => b.paymentDate - a.paymentDate)
 
       const { dataPaged, nextPage, prevPage, currentPage } = pagination(payments, req.query.page, 10)
       payments = dataPaged
 
-      const dataDisplayInTable = payments.map(({ checkNumber, paymentDate, ...rest }) => ({
+      const dataDisplayInTable = payments.map(({ _id, checkNumber, paymentDate, ...rest }) => ({
         id: checkNumber,
         checkNumber,
         paymentDate: formatDate(paymentDate),
@@ -258,7 +247,7 @@ export class DashboardController {
       const { user } = req.session
       const username = user.username
 
-      let customers = await CustomerModel.getAll('')
+      let customers = await defaultDataModel.CustomerModel.getAll('')
       customers.sort((a, b) => b.customerNumber - a.customerNumber)
 
       if (req.query.search) {
@@ -276,7 +265,7 @@ export class DashboardController {
       const { dataPaged, nextPage, prevPage, currentPage } = pagination(customers, req.query.page, 10)
       customers = dataPaged
 
-      const dataDisplayInTable = customers.map(({ customerNumber, contactLastName, contactFirstName, phone, addressLine2, state, postalCode, salesRepEmployeeNumber, creditLimit, ...rest }) => ({
+      const dataDisplayInTable = customers.map(({ _id, customerNumber, contactLastName, contactFirstName, phone, addressLine2, state, postalCode, salesRepEmployeeNumber, creditLimit, ...rest }) => ({
         id: customerNumber,
         ...rest
       }))
@@ -328,13 +317,13 @@ export class DashboardController {
       const { user } = req.session
       const username = user.username
 
-      let offices = await OfficeModel.getAll()
+      let offices = await defaultDataModel.OfficeModel.getAll()
       offices.sort((a, b) => b.paymentDate - a.paymentDate)
 
       const { dataPaged, nextPage, prevPage, currentPage } = pagination(offices, req.query.page, 10)
       offices = dataPaged
 
-      const dataDisplayInTable = offices.map(({ id, phone, addressLine2, state, postalCode, territory, ...rest }) => ({
+      const dataDisplayInTable = offices.map(({ id, _id, phone, addressLine2, state, postalCode, territory, ...rest }) => ({
         id,
         ...rest
       }))
@@ -367,13 +356,13 @@ export class DashboardController {
       const { user } = req.session
       const username = user.username
 
-      let paymentMethods = await PaymentMethodsModel.getAll()
+      let paymentMethods = await defaultDataModel.PaymentMethodsModel.getAll()
       paymentMethods.sort((a, b) => a.id - b.id)
 
       const { dataPaged, nextPage, prevPage, currentPage } = pagination(paymentMethods, req.query.page, 10)
       paymentMethods = dataPaged
 
-      const dataDisplayInTable = paymentMethods.map(({ ...rest }) => ({
+      const dataDisplayInTable = paymentMethods.map(({ _id, ...rest }) => ({
         ...rest
       }))
 
@@ -405,13 +394,13 @@ export class DashboardController {
       const { user } = req.session
       const username = user.username
 
-      let paymentStatus = await PaymentStatusModel.getAll()
+      let paymentStatus = await defaultDataModel.PaymentStatusModel.getAll()
       paymentStatus.sort((a, b) => a.id - b.id)
 
       const { dataPaged, nextPage, prevPage, currentPage } = pagination(paymentStatus, req.query.page, 10)
       paymentStatus = dataPaged
 
-      const dataDisplayInTable = paymentStatus.map(({ ...rest }) => ({
+      const dataDisplayInTable = paymentStatus.map(({ _id, ...rest }) => ({
         ...rest
       }))
 
@@ -443,13 +432,13 @@ export class DashboardController {
       const { user } = req.session
       const username = user.username
 
-      let orderStatus = await OrderStatusModel.getAll()
+      let orderStatus = await defaultDataModel.OrderStatusModel.getAll()
       orderStatus.sort((a, b) => a.id - b.id)
 
       const { dataPaged, nextPage, prevPage, currentPage } = pagination(orderStatus, req.query.page, 10)
       orderStatus = dataPaged
 
-      const dataDisplayInTable = orderStatus.map(({ ...rest }) => ({
+      const dataDisplayInTable = orderStatus.map(({ _id, ...rest }) => ({
         ...rest
       }))
 
@@ -481,13 +470,13 @@ export class DashboardController {
       const { user } = req.session
       const username = user.username
 
-      let productLines = await ProductLineModel.getAll()
+      let productLines = await defaultDataModel.ProductLineModel.getAll()
       productLines.sort((a, b) => a.id - b.id)
 
       const { dataPaged, nextPage, prevPage, currentPage } = pagination(productLines, req.query.page, 10)
       productLines = dataPaged
 
-      const dataDisplayInTable = productLines.map(({ ...rest }) => ({
+      const dataDisplayInTable = productLines.map(({ _id, ...rest }) => ({
         ...rest
       }))
 
@@ -519,13 +508,13 @@ export class DashboardController {
       const { user } = req.session
       const username = user.username
 
-      let users = await UsersModel.getAll()
+      let users = await defaultDataModel.UsersModel.getAll()
       users.sort((a, b) => a.id - b.id)
 
       const { dataPaged, nextPage, prevPage, currentPage } = pagination(users, req.query.page, 10)
       users = dataPaged
 
-      const dataDisplayInTable = users.map(({ password, username, registerAt, lastLogin, active, ...rest }) => ({
+      const dataDisplayInTable = users.map(({ _id, password, username, registerAt, lastLogin, active, ...rest }) => ({
         username,
         registerAt: formatDate(registerAt),
         lastLogin: formatDate(lastLogin),
@@ -567,7 +556,7 @@ export class DashboardController {
 
       console.time()
       if (req.query.entity === 'products') {
-        const products = await ProductModel.getAllComplete('')
+        const products = await defaultDataModel.ProductModel.getAllComplete('')
         const productsInTable = products.sort((a, b) => b.id - a.id).map(({ id, ...rest }) => ({
           ...rest
         }))
@@ -580,7 +569,7 @@ export class DashboardController {
           path: path.join(__dirname, '../public/docs/') + filename
         }
       } else if (req.query.entity === 'customers') {
-        const customers = await CustomerModel.getAll('')
+        const customers = await defaultDataModel.CustomerModel.getAll('')
         const customersInTable = customers.sort((a, b) => b.id - a.id).map(({ customerNumber, contactLastName, contactFirstName, phone, addressLine2, state, postalCode, salesRepEmployeeNumber, creditLimit, ...rest }) => ({
           ...rest
         }))

@@ -1,7 +1,5 @@
 import z from 'zod'
-import { OrderModel } from '../models/orders.js'
-import { ProductModel } from '../models/products.js'
-import { OrderDetailsModel } from '../models/orderDetails.js'
+import { defaultDataModel } from '../server-data-model.js'
 
 let thisOrderNumber = 0
 let thisOrderProducts = []
@@ -14,10 +12,10 @@ const orderDetailScheme = z.object({
     .refine(async (e) => {
       return await checkIfOrderIsValid(e)
     }, 'Select a valid order number'),
-  productCode: z
-    .string({ invalid_type_error: 'Product code must be a string' })
+  productId: z
+    .string({ invalid_type_error: 'Product id must be a string' })
     .refine(async (e) => {
-      return await checkIfProductCodeIsValid(e)
+      return await checkIfProductIdIsValid(e)
     }, 'Select a valid product code'),
   quantityOrdered: z
     .number({ invalid_type_error: 'Quantity must be a number' })
@@ -43,26 +41,26 @@ export function validatePartialOrderDetail (object) {
 
 async function checkIfOrderIsValid (id) {
   thisOrderNumber = id
-  const valid = await OrderModel.getById({ id })
+  const valid = await defaultDataModel.OrderModel.getById({ id })
   return valid.length > 0
 }
 
-async function checkIfProductCodeIsValid (code) {
-  if (thisOrderProducts.includes(code)) {
+async function checkIfProductIdIsValid (id) {
+  if (thisOrderProducts.includes(id)) {
     console.log('duplicated in the same query')
     return false
   }
-  thisOrderProducts.push(code)
+  thisOrderProducts.push(id)
 
-  const productsInOrder = await OrderDetailsModel.getAll({ orderNumber: thisOrderNumber })
+  const productsInOrder = await defaultDataModel.OrderDetailsModel.getAll({ orderNumber: thisOrderNumber })
   for (const p of productsInOrder) {
-    if (p.productCode === code) {
+    if (p.productCode === id) {
       console.log('duplicated in the same order')
       return false
     }
   }
 
-  const valid = await ProductModel.getById({ id: code })
+  const valid = await defaultDataModel.ProductModel.getById({ id })
   if (valid.length === 0) {
     console.log("the product code don't exist")
     return false
@@ -72,7 +70,7 @@ async function checkIfProductCodeIsValid (code) {
 }
 
 async function checkIfOrderLineNumberExist (id) {
-  const valid = await OrderDetailsModel.getById({ orderNumber: thisOrderNumber, orderLineNumber: id })
+  const valid = await defaultDataModel.OrderDetailsModel.getById({ orderNumber: thisOrderNumber, orderLineNumber: id })
   return valid.length === 0
 }
 

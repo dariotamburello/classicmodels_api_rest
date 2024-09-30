@@ -1,6 +1,6 @@
 import mysql from 'mysql2/promise'
-import { configuration } from '../configuration/dbConnections.js'
-import { DBError } from '../utils/errorTypes.js'
+import { configuration } from '../../configuration/dbConnections.js'
+import { DBError } from '../../utils/errorTypes.js'
 
 const connection = await mysql.createConnection(configuration)
 

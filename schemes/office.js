@@ -5,16 +5,22 @@ const officeScheme = z.object({
     invalid_type_error: 'City must be a string',
     required_error: 'City is required'
   }),
-  phone: z.string({
-    invalid_type_error: 'Phone must be a string',
+  phone: z.number({
+    invalid_type_error: 'Phone must be a number',
     required_error: 'Phone is required'
   }),
   addressLine1: z.string({
     invalid_type_error: 'Address must be a string',
     required_error: 'Address is required'
   }),
-  state: z.string({ invalid_type_error: 'State must be a string' }),
-  postalCode: z.string({ invalid_type_error: 'Postal code must be a string' }),
+  state: z
+    .string({ invalid_type_error: 'State must be a string' })
+    .optional(),
+  postalCode: z
+    .string({
+      invalid_type_error: 'Postal code must be a string',
+      required_error: 'Postal code is required'
+    }),
   country: z.string({
     invalid_type_error: 'Country must be a string',
     required_error: 'Country is required'

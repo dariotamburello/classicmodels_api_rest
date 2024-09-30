@@ -1,7 +1,5 @@
 import z from 'zod'
-import { CustomerModel } from '../models/customers.js'
-import { PaymentMethodsModel } from '../models/paymentMethods.js'
-import { PaymentStatusModel } from '../models/paymentStatus.js'
+import { defaultDataModel } from '../server-data-model.js'
 
 const paymentScheme = z.object({
   customerNumber: z
@@ -44,16 +42,16 @@ export function validatePartialPayment (object) {
 }
 
 async function checkIfCustomerNumberIsValid (number) {
-  const valid = await CustomerModel.getById({ id: number })
+  const valid = await defaultDataModel.CustomerModel.getById({ id: number })
   return valid.length > 0
 }
 
 async function checkIfPaymentStatusIsValid (id) {
-  const valid = await PaymentStatusModel.getById({ id })
+  const valid = await defaultDataModel.PaymentStatusModel.getById({ id })
   return valid.length > 0
 }
 
 async function checkIfPaymentMethodIsValid (id) {
-  const valid = await PaymentMethodsModel.getById({ id })
+  const valid = await defaultDataModel.PaymentMethodsModel.getById({ id })
   return valid.length > 0
 }

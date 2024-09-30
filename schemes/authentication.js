@@ -1,7 +1,7 @@
 import z from 'zod'
-import { UsersModel } from '../models/users.js'
 import { userActive } from '../constants/userActive.js'
 import { userGroups } from '../constants/userGroups.js'
+import { defaultDataModel } from '../server-data-model.js'
 
 const authenticationScheme = z.object({
   username: z.string({
@@ -45,6 +45,6 @@ export function validatePartialUser (object) {
 }
 
 async function checkIfUsernameExist (username) {
-  const valid = await UsersModel.getByUsername(username)
+  const valid = await defaultDataModel.UsersModel.getByUsername(username)
   return !valid
 }

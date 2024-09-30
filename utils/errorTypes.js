@@ -13,6 +13,16 @@ export class DBError extends Error {
   }
 }
 
+export class MongoDBError extends Error {
+  constructor (message) {
+    super(message)
+    this.statusCode = 500
+    this.errorType = errorTypes.ERROR_DATABASE
+    this.description = `[MongoDBError] ${message}`
+    this.stack = null
+  }
+}
+
 export class AppError extends Error {
   constructor (message, module) {
     super(message)

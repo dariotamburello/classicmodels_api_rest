@@ -1,4 +1,5 @@
 import { getFormattedDateTime } from '../helpers/datetimes.js'
+import { generateCheckNumber } from '../helpers/payments.js'
 import { validatePayment, validatePartialPayment } from '../schemes/payment.js'
 import { DataError, ValidationError } from '../utils/errorTypes.js'
 
@@ -31,6 +32,7 @@ export class PaymentsController {
     try {
       const resultValidation = await validatePayment(req.body)
       if (resultValidation.error) throw new ValidationError(JSON.parse(resultValidation.error.message))
+      resultValidation.data.checkNumber = generateCheckNumber()
       resultValidation.data.paymentDate = getFormattedDateTime()
       const payment = await this.paymentsModel.create(resultValidation.data)
       if (!payment) throw new DataError('Can\'t create payment.')

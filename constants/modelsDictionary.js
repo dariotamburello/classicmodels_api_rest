@@ -79,6 +79,7 @@ export const OfficesDictionary = {
   modelForm: [
     { field: 'id', title: 'Code', input: 'input', type: 'text', create: false, editable: false, required: true },
     { field: 'city', title: 'City', input: 'input', type: 'text', create: true, editable: true, required: true },
+    { field: 'phone', title: 'Phone', input: 'input', type: 'number', create: true, editable: true, required: true },
     { field: 'addressLine1', title: 'Address line 1', input: 'input', type: 'text', create: true, editable: true, required: true },
     { field: 'addressLine2', title: 'Address line 2', input: 'input', type: 'text', create: true, editable: true, required: false },
     { field: 'state', title: 'State', input: 'input', type: 'text', create: true, editable: true, required: false },

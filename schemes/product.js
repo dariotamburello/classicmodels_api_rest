@@ -1,6 +1,5 @@
 import z from 'zod'
-import { ProductModel } from '../models/products.js'
-import { ProductLineModel } from '../models/productLines.js'
+import { defaultDataModel } from '../server-data-model.js'
 
 const productScheme = z.object({
   productCode: z
@@ -76,11 +75,11 @@ export function validatePartialProducts (object) {
 }
 
 async function checkIfProductCodeExist (code) {
-  const valid = await ProductModel.getById({ id: code })
+  const valid = await defaultDataModel.ProductModel.getById({ id: code })
   return valid.length === 0
 }
 
 async function checkIfProductLineExist (code) {
-  const valid = await ProductLineModel.getById({ id: code })
+  const valid = await defaultDataModel.ProductLineModel.getById({ id: code })
   return valid.length > 0
 }

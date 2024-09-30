@@ -1,6 +1,6 @@
 import mysql from 'mysql2/promise'
-import { configuration } from '../configuration/dbConnections.js'
-import { DBError } from '../utils/errorTypes.js'
+import { configuration } from '../../configuration/dbConnections.js'
+import { DBError } from '../../utils/errorTypes.js'
 
 const connection = await mysql.createConnection(configuration)
 
@@ -8,7 +8,7 @@ export class OrderDetailsModel {
   static async getAll ({ orderNumber }) {
     try {
       const [ordersDetails] = await connection.query(
-        'SELECT * FROM orderDetails;'
+        'SELECT * FROM orderdetails;'
       )
       if (ordersDetails.length === 0) return []
       if (orderNumber) { return ordersDetails.filter(e => (e.orderNumber === +orderNumber)) }
@@ -44,7 +44,7 @@ export class OrderDetailsModel {
   static async getById ({ orderNumber, orderLineNumber }) {
     try {
       const orderDetails = await connection.query(
-        'SELECT * FROM orderDetails WHERE orderNumber = ? AND orderLineNumber = ?;',
+        'SELECT * FROM orderdetails WHERE orderNumber = ? AND orderLineNumber = ?;',
         [orderNumber, orderLineNumber]
       )
       if (!orderDetails) return []
@@ -65,9 +65,9 @@ export class OrderDetailsModel {
         } = detail
 
         await connection.query(
-          `INSERT INTO orderDetails (
+          `INSERT INTO orderdetails (
               orderNumber,
-              productCode,
+              productId,
               quantityOrdered,
               orderLineNumber
           ) VALUES (?, ?, ?, ?);`,
@@ -90,7 +90,7 @@ export class OrderDetailsModel {
   static async delete ({ orderNumber, orderLineNumber }) {
     try {
       const result = await connection.query(
-        'DELETE FROM orderDetails WHERE orderNumber = ? AND orderLineNumber = ?;',
+        'DELETE FROM orderdetails WHERE orderNumber = ? AND orderLineNumber = ?;',
         [orderNumber, orderLineNumber]
       )
       if (result[0].affectedRows === 0) return false
@@ -113,9 +113,9 @@ export class OrderDetailsModel {
       }
 
       await connection.query(
-        `UPDATE orderDetails
+        `UPDATE orderdetails
         SET orderNumber = ?,
-          productCode = ?,
+          productId = ?,
           quantityOrdered = ?,
           orderLineNumber = ?
         WHERE orderNumber = ? AND orderLineNumber = ?;`,

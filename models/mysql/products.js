@@ -1,6 +1,6 @@
 import mysql from 'mysql2/promise'
-import { configuration } from '../configuration/dbConnections.js'
-import { DBError } from '../utils/errorTypes.js'
+import { configuration } from '../../configuration/dbConnections.js'
+import { DBError } from '../../utils/errorTypes.js'
 
 const connection = await mysql.createConnection(configuration)
 
@@ -23,6 +23,19 @@ export class ProductModel {
       const product = await connection.query(
         'SELECT * FROM products WHERE id = ?;',
         [id]
+      )
+      if (!product) return []
+      return product[0]
+    } catch (error) {
+      throw new DBError(error, 'Error getting product.')
+    }
+  }
+
+  static async getByCode ({ code }) {
+    try {
+      const product = await connection.query(
+        'SELECT * FROM products WHERE productCode = ?;',
+        [code]
       )
       if (!product) return []
       return product[0]
@@ -132,7 +145,7 @@ export class ProductModel {
     }
   }
 
-  static async getAllComplete () { // borrar products_with_details_view de la bd
+  static async getAllComplete () {
     try {
       const [products] = await connection.query(
         `SELECT 

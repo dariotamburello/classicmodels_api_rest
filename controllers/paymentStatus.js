@@ -1,3 +1,4 @@
+import crypto from 'node:crypto'
 import { validatePartialPaymentStatus, validatePaymentStatus } from '../schemes/paymentStatus.js'
 import { DataError, ValidationError } from '../utils/errorTypes.js'
 
@@ -29,6 +30,7 @@ export class PaymentStatusController {
     try {
       const resultValidation = await validatePaymentStatus(req.body)
       if (resultValidation.error) throw new ValidationError(JSON.parse(resultValidation.error.message))
+      resultValidation.data.id = crypto.randomUUID()
       const paymentStatus = await this.paymentStatusModel.create(resultValidation.data)
       if (!paymentStatus) throw new DataError('Can\'t create payment status.')
       res.json(paymentStatus)
@@ -40,7 +42,7 @@ export class PaymentStatusController {
   delete = async (req, res, next) => {
     const { id } = req.params
     try {
-      const result = await this.paymentsModel.delete(id)
+      const result = await this.paymentStatusModel.delete(id)
       if (!result) throw new DataError(`Payment status id '${id}' not found.`)
       return res.json({ message: 'Payment status deleted ' })
     } catch (error) {
@@ -53,7 +55,7 @@ export class PaymentStatusController {
     try {
       const resultValidation = await validatePartialPaymentStatus(req.body)
       if (resultValidation.error) throw new ValidationError(JSON.parse(resultValidation.error.message))
-      const result = await this.paymentsModel.update(id, resultValidation.data)
+      const result = await this.paymentStatusModel.update(id, resultValidation.data)
       if (!result) throw new DataError(`Payment status id '${id}' not found.`)
       res.status(202).json(result)
     } catch (error) {

@@ -32,6 +32,8 @@ export class CustomerController {
     try {
       const resultValidation = await validateCustomer(req.body)
       if (resultValidation.error) throw new ValidationError(JSON.parse(resultValidation.error.message))
+      const previousCustomer = await this.customerModel.getLast()
+      resultValidation.data.customerNumber = previousCustomer[0].customerNumber + 1
       const customer = await this.customerModel.create(resultValidation.data)
       if (!customer) throw new DataError('Can\'t create customer.')
       res.json(customer)

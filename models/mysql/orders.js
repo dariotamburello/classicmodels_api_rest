@@ -1,6 +1,6 @@
 import mysql from 'mysql2/promise'
-import { configuration } from '../configuration/dbConnections.js'
-import { DBError } from '../utils/errorTypes.js'
+import { configuration } from '../../configuration/dbConnections.js'
+import { DBError } from '../../utils/errorTypes.js'
 
 const connection = await mysql.createConnection(configuration)
 
@@ -34,6 +34,7 @@ export class OrderModel {
   static async create (order) {
     try {
       const {
+        orderNumber,
         orderDate,
         requiredDate,
         pickUpDate,
@@ -47,8 +48,9 @@ export class OrderModel {
 
       // const orderDate = new Date().toISOString().slice(0, 19).replace('T', ' ') // Format YYYY-MM-DD HH:MM:SS
 
-      const result = await connection.query(
+      await connection.query(
         `INSERT INTO orders (
+            orderNumber,
             orderDate,
             requiredDate,
             pickUpDate,
@@ -58,8 +60,9 @@ export class OrderModel {
             total,
             paymentCheckNumber,
             pickUpOffice
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
         [
+          orderNumber,
           orderDate,
           requiredDate,
           pickUpDate,
@@ -71,7 +74,6 @@ export class OrderModel {
           pickUpOffice
         ]
       )
-      order.orderNumber = result[0].insertId
       return order
     } catch (error) {
       throw new DBError(error, 'Error creating order.')

@@ -2,8 +2,8 @@ import jwt from 'jsonwebtoken'
 import { configurationEncrypt } from '../configuration/encriptation.js'
 import { AuthError } from '../utils/errorTypes.js'
 import { errorTypes } from '../constants/errorTypes.js'
-import { UsersModel } from '../models/users.js'
 import { userGroups } from '../constants/userGroups.js'
+import { defaultDataModel } from '../server-data-model.js'
 
 export const checkToken = (req, res, next) => {
   const token = req.cookies?.access_token
@@ -36,7 +36,7 @@ export const validateSession = (req, res, next) => {
 export const isAdmin = async (req, res, next) => {
   try {
     if (req.session.user === null) throw new AuthError(errorTypes.ERROR_ACCESS_DENIED, req)
-    const userFound = await UsersModel.getById(req.session.user)
+    const userFound = await defaultDataModel.UsersModel.getById(req.session.user)
     if (userFound[0].usergroup !== userGroups.ADMIN) throw new AuthError(errorTypes.ERROR_ACCESS_DENIED, req)
     next()
   } catch (error) {
@@ -47,7 +47,7 @@ export const isAdmin = async (req, res, next) => {
 export const checkAdminUser = async (req, res, next) => {
   try {
     if (req.session.user === null) return false
-    const userFound = await UsersModel.getById(req.session.user)
+    const userFound = await defaultDataModel.UsersModel.getById(req.session.user)
     if (userFound[0].usergroup !== userGroups.ADMIN) return false
     next()
   } catch (error) {

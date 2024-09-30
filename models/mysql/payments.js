@@ -1,7 +1,6 @@
 import mysql from 'mysql2/promise'
-import { configuration } from '../configuration/dbConnections.js'
-import { generateCheckNumber } from '../helpers/payments.js'
-import { DBError } from '../utils/errorTypes.js'
+import { configuration } from '../../configuration/dbConnections.js'
+import { DBError } from '../../utils/errorTypes.js'
 
 const connection = await mysql.createConnection(configuration)
 
@@ -60,11 +59,10 @@ export class PaymentsModel {
         customerNumber,
         amount,
         paymentStatus,
-        paymentMethod
+        paymentMethod,
+        paymentDate,
+        checkNumber
       } = input
-
-      const checkNumber = generateCheckNumber()
-      const paymentDate = new Date().toISOString().slice(0, 19).replace('T', ' ') // Format YYYY-MM-DD HH:MM:SS
 
       await connection.query(
         `INSERT INTO payments (
@@ -84,8 +82,6 @@ export class PaymentsModel {
           paymentMethod
         ]
       )
-      input.checkNumber = checkNumber
-      input.paymentDate = paymentDate
       return input
     } catch (error) {
       throw new DBError(error, 'Error creating payment.')

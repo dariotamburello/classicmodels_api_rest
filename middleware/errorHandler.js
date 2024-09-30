@@ -1,4 +1,4 @@
-import { AppError, AuthError, BusinessError, DBError, DataError, RenderError, ValidationError } from '../utils/errorTypes.js'
+import { AppError, AuthError, BusinessError, DBError, DataError, MongoDBError, RenderError, ValidationError } from '../utils/errorTypes.js'
 import { handleErrorLog } from '../helpers/handleLogs.js'
 
 export const errorHandler = (error, req, res, next) => {
@@ -15,6 +15,11 @@ export const errorHandler = (error, req, res, next) => {
   }
 
   if (error instanceof DBError) {
+    handleErrorLog(error, route, header)
+    res.status(error.statusCode).json(errorFormatToFront(error))
+  }
+
+  if (error instanceof MongoDBError) {
     handleErrorLog(error, route, header)
     res.status(error.statusCode).json(errorFormatToFront(error))
   }

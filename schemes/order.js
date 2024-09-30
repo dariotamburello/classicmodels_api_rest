@@ -1,8 +1,5 @@
 import z from 'zod'
-import { CustomerModel } from '../models/customers.js'
-import { OrderStatusModel } from '../models/orderStatus.js'
-import { PaymentsModel } from '../models/payments.js'
-import { OfficeModel } from '../models/offices.js'
+import { defaultDataModel } from '../server-data-model.js'
 
 const orderScheme = z.object({
   requiredDate: z.coerce
@@ -77,21 +74,21 @@ export function validatePartialOrder (object) {
 }
 
 async function checkIfStatusIsValid (id) {
-  const valid = await OrderStatusModel.getById({ id })
+  const valid = await defaultDataModel.OrderStatusModel.getById({ id })
   return valid.length > 0
 }
 
 async function checkIfCustomerNumberIsValid (number) {
-  const valid = await CustomerModel.getById({ id: number })
+  const valid = await defaultDataModel.CustomerModel.getById({ id: number })
   return valid.length > 0
 }
 
 async function checkIfPaymentCheckNumberIsValid (code) {
-  const valid = await PaymentsModel.getById({ id: code })
+  const valid = await defaultDataModel.PaymentsModel.getById({ id: code })
   return valid.length > 0
 }
 
 async function checkIfPickUpOfficeIsValid (id) {
-  const valid = await OfficeModel.getById({ id })
+  const valid = await defaultDataModel.OfficeModel.getById({ id })
   return valid.length > 0
 }
