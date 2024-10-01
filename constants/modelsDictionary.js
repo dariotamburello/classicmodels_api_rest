@@ -20,7 +20,7 @@ export const ProductsDictionary = {
 export const OrdersDictionary = {
   entityName: 'Orders',
   stringURL: 'orders',
-  tableTitles: ['Order', 'Date', 'Required', 'Comments', 'Customer', 'Total', 'Status', 'Payment'],
+  tableTitles: ['Order', 'Date', 'Required', 'Comments', 'Total', 'Customer', 'Status', 'Payment'],
   smallTableTitles: ['Date', 'Customer', 'Total', 'Status'],
   modelForm: [
     { field: 'orderNumber', title: 'Order number', input: 'input', type: 'number', create: false, editable: false, required: true },
