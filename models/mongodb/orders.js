@@ -1,13 +1,3 @@
-// const collection = await connectMongoDB('????')
-// import { OrderDetailsModel as mysqlModel } from '../mysql/orderDetails.js'
-// const rows = await mysqlModel.getAll('')
-// if (rows.length > 0) {
-//   await collection.insertMany(rows)
-//   console.log('Datos migrados exitosamente a MongoDB')
-// } else {
-//   console.log('No hay datos para migrar')
-// }
-
 import { connectMongoDB } from '../../configuration/mongoConnections.js'
 import { MongoDBError } from '../../utils/errorTypes.js'
 

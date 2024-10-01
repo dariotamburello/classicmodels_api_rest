@@ -20,6 +20,7 @@ import { createPaymentsRouter } from './routes/payments.js'
 import { createAuthenticationRouter } from './routes/authentication.js'
 import { createUsersRouter } from './routes/users.js'
 import { createPaymentStatusRouter } from './routes/paymentStatus.js'
+import { createLogsRouter } from './routes/logs.js'
 
 import { createDashboardRouter } from './routes/dashboard.js'
 import { DashboardController } from './controllers/dashboard.js'
@@ -81,6 +82,7 @@ app.use('/payments', createPaymentsRouter({ paymentsModel: dataModels.PaymentsMo
 app.use('/paymentstatus', createPaymentStatusRouter({ paymentStatusModel: dataModels.PaymentStatusModel }))
 app.use('/users', createUsersRouter({ usersModel: dataModels.UsersModel }))
 app.use('/auth', createAuthenticationRouter({ usersModel: dataModels.UsersModel }))
+app.use('/logs', createLogsRouter({ logsModel: dataModels.LogsModel }))
 app.use('/dashboard', createDashboardRouter())
 
 app.use(errorHandler)

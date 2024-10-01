@@ -1,6 +1,6 @@
 import crypto from 'node:crypto'
-import { LogsModel } from '../models/logs.js'
 import { getFormattedDateTime } from './datetimes.js'
+import { defaultDataModel } from '../server-data-model.js'
 
 if (process.env.ENV !== 'PRD') process.loadEnvFile()
 
@@ -16,7 +16,7 @@ export const handleErrorLog = (error, route, headers) => {
       originurl: route,
       originheader: headers.toString()
     }
-    LogsModel.create(log)
+    defaultDataModel.LogsModel.create(log)
   }
 }
 

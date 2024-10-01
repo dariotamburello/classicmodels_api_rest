@@ -1,4 +1,4 @@
-import { CustomersDictionary, OfficesDictionary, OrdersDictionary, OrderStatusDictionary, PaymentMethodsDictionary, PaymentsDictionary, PaymentStatusDictionary, ProductLinesDictionary, ProductsDictionary, UsersDictionary } from '../constants/modelsDictionary.js'
+import { CustomersDictionary, LogsDictionary, OfficesDictionary, OrdersDictionary, OrderStatusDictionary, PaymentMethodsDictionary, PaymentsDictionary, PaymentStatusDictionary, ProductLinesDictionary, ProductsDictionary, UsersDictionary } from '../constants/modelsDictionary.js'
 import { options } from '../constants/pdfOptions.js'
 import { handlePagination } from '../middleware/pagination.js'
 import { defaultDataModel } from '../server-data-model.js'
@@ -526,6 +526,45 @@ export class DashboardController {
         data: {
           username,
           dictionary: UsersDictionary,
+          dataInTable: {
+            tableRows: dataDisplayInTable
+          },
+          searcher: false,
+          pagination: {
+            prevPage,
+            nextPage,
+            currentPage
+          }
+        }
+      }, (err, html) => {
+        if (err) throw new Error(err)
+        res.send(html)
+      })
+    } catch (error) {
+      next(new AppError(error, `[${this.constructor.name}] ${this.paymentsView.name}.`))
+    }
+  }
+
+  logsView = async (req, res, next) => {
+    try {
+      const { user } = req.session
+      const username = user.username
+
+      let logs = await defaultDataModel.LogsModel.getAll()
+      logs.sort((a, b) => a.id - b.id)
+
+      const { dataPaged, nextPage, prevPage, currentPage } = pagination(logs, req.query.page, 10)
+      logs = dataPaged
+
+      const dataDisplayInTable = logs.map(({ _id, datetime, originurl, originheader, ...rest }) => ({
+        datetime: formatDate(datetime),
+        ...rest
+      }))
+
+      res.render('template-CRUD', {
+        data: {
+          username,
+          dictionary: LogsDictionary,
           dataInTable: {
             tableRows: dataDisplayInTable
           },

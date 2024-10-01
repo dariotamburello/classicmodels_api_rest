@@ -19,6 +19,7 @@ export const createDashboardRouter = () => {
   dashboardRouter.get('/orderstatus', checkToken, dashboardController.orderStatusView)
   dashboardRouter.get('/productlines', checkToken, dashboardController.productLinesView)
   dashboardRouter.get('/users', checkToken, dashboardController.usersView)
+  dashboardRouter.get('/logs', checkToken, dashboardController.logsView)
 
   dashboardRouter.get('/download', checkToken, dashboardController.generatePdf)
 

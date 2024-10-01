@@ -149,3 +149,17 @@ export const UsersDictionary = {
     { field: 'usergroup', title: 'Group', input: 'select', type: 'text', options: 'User,Moderator,Admin', create: true, editable: true, required: false }
   ]
 }
+
+export const LogsDictionary = {
+  entityName: 'Logs',
+  stringURL: 'logs',
+  tableTitles: ['Datetime', 'Error type', 'Description'],
+  modelForm: [
+    { field: 'id', title: 'ID', input: 'input', type: 'text', create: false, editable: false, required: true },
+    { field: 'datetime', title: 'Date time', input: 'input', type: 'datetime-local', create: false, editable: false, required: true },
+    { field: 'type', title: 'Error type', input: 'input', type: 'text', create: false, editable: false, required: false },
+    { field: 'description', title: 'Description', input: 'textarea', type: 'text', create: false, editable: true, required: false },
+    { field: 'originurl', title: 'Origin', input: 'textarea', type: 'text', create: false, editable: true, required: false },
+    { field: 'originheader', title: 'Header', input: 'textarea', type: 'text', create: false, editable: true, required: false }
+  ]
+}

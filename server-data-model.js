@@ -22,6 +22,8 @@ import { UsersModel as UsersMysql } from './models/mysql/users.js'
 import { UsersModel as UsersMongo } from './models/mongodb/users.js'
 import { PaymentStatusModel as PaymentStatusMysql } from './models/mysql/paymentStatus.js'
 import { PaymentStatusModel as PaymentStatusMongo } from './models/mongodb/paymentStatus.js'
+import { LogsModel as LogsMysql } from './models/mysql/logs.js'
+import { LogsModel as LogsMongo } from './models/mongodb/logs.js'
 
 const mongoDataModels = {
   ProductModel: ProductMongo,
@@ -35,7 +37,8 @@ const mongoDataModels = {
   PaymentMethodsModel: PaymentMethodsMongo,
   PaymentsModel: PaymentsMongo,
   UsersModel: UsersMongo,
-  PaymentStatusModel: PaymentStatusMongo
+  PaymentStatusModel: PaymentStatusMongo,
+  LogsModel: LogsMongo
 }
 
 const mysqlDataModels = {
@@ -50,7 +53,8 @@ const mysqlDataModels = {
   PaymentMethodsModel: PaymentMethodsMysql,
   PaymentsModel: PaymentsMysql,
   UsersModel: UsersMysql,
-  PaymentStatusModel: PaymentStatusMysql
+  PaymentStatusModel: PaymentStatusMysql,
+  LogsModel: LogsMysql
 }
 
 if (process.env.ENV !== 'PRD') process.loadEnvFile()
