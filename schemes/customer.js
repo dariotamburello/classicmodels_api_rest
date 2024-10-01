@@ -1,5 +1,5 @@
 import z from 'zod'
-import { EmployeeModel } from '../models/mysql/employees.js'
+import { defaultDataModel } from '../server-data-model.js'
 
 const customerScheme = z.object({
   customerName: z.string({
@@ -66,6 +66,6 @@ export function validatePartialCustomer (object) {
 }
 
 async function checkIfSalesRepEmployeeNumberIsValid (number) {
-  const valid = await EmployeeModel.getById({ id: number })
+  const valid = await defaultDataModel.EmployeeModel.getById({ id: number })
   return valid.length > 0
 }

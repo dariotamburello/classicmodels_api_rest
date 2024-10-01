@@ -18,7 +18,6 @@ export class AuthenticationController {
     const { username, password } = req.body
     try {
       const userFound = await this.usersModel.getByUsername(username)
-      console.log(userFound.active)
       if (!userFound || userFound.active === userActive.DISABLED) throw new AuthError(errorTypes.ERROR_LOGIN, req)
       const checkPassword = await bcrypt.compare(password, userFound.password)
       if (!checkPassword) throw new AuthError(errorTypes.ERROR_LOGIN, req)

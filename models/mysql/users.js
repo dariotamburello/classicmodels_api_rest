@@ -1,8 +1,8 @@
 import mysql from 'mysql2/promise'
-import { configuration } from '../../configuration/dbConnections.js'
+import { msyqlConfiguration } from '../../configuration/dbConnections.js'
 import { DBError } from '../../utils/errorTypes.js'
 
-const connection = await mysql.createConnection(configuration)
+const connection = await mysql.createConnection(msyqlConfiguration)
 
 export class UsersModel {
   static async getAll () {
