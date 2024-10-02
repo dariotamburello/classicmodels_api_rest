@@ -1,0 +1,87 @@
+<section id="maintenance">
+    <article>
+        <h1>Update dates in database</h1>
+        <p>Increase the dates in:</p>
+        <form id="form_update_dates">
+            <div class="field">
+                <label for="qtyDate" >Quantity: </label>
+                <input type="number" id="qtyDate" value="0" min="0" required>
+            </div>
+            <div class="field">
+                <label for="stringDate">Day/Month: </label>
+                <select name="day_month" id="stringDate" required>
+                    <option disabled selected>Select</option>
+                    <option value="day">Days</option>
+                    <option value="month">Months</option>
+                </select>
+            </div>
+        </form>
+        <div class="result_update">
+            <button id="update_dates" class="pure-button pure-button-primary">Update</button>
+            <p id="update_result" class="hidden">OK</p>
+        </div>
+    </article>
+</section>
+
+<script>
+    window.addEventListener('load', function () {
+        $buttonUpdateDates = document.querySelector('#update_dates')
+        
+        $buttonUpdateDates.addEventListener('click', (e) => {
+            const $message = document.querySelector('#update_result')
+            $message.innerText = ""
+            $quantityInput = document.querySelector('#qtyDate')
+            $stringInput = document.querySelector('#stringDate')
+            const increaseDate = {
+                "qtyDate": $quantityInput.value,
+                "stringDate": $stringInput.value
+            }
+            actions.updateDates(increaseDate)
+        })
+
+        const actions = {
+            updateDates: function({ qtyDate, stringDate }) {
+                if (qtyDate < 1 || stringDate === 'Select') {
+                    actions.displayResultMessage(false, "Please update fields.")
+                    return
+                }
+                Notiflix.Loading.hourglass('Updating dates, please wait...')
+                try {
+                    const update = fetch('/maintenance/updatealldates', {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            'qtyDate': qtyDate,
+                            'stringDate': stringDate
+                        })
+                    }).then(res => {
+                        Notiflix.Loading.remove()
+                        if (!res.ok) return actions.displayResultMessage(false, `Can't update dates.`)
+                        res.json().then(result => {
+                            actions.displayResultMessage(true, `Dates updated (${result})`)
+                        })
+                    })
+                } catch (error) {
+                    Notiflix.Loading.remove()
+                    actions.displayResultMessage(false, `Error updating dates: ${error}.`)
+                }
+                
+            },
+            displayResultMessage: function(success, message) {
+                const $message = document.querySelector('#update_result')
+                if (success) {
+                    $message.classList.remove('hidden')
+                    $message.classList.remove('result_message_error')
+                    $message.innerText = message
+                } else {
+                    $message.classList.remove('hidden')
+                    $message.classList.add('result_message_error')
+                    $message.innerText = message
+                }
+            }
+        }
+    })
+</script>
+

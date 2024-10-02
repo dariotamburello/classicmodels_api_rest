@@ -584,6 +584,24 @@ export class DashboardController {
     }
   }
 
+  maintenance = async (req, res, next) => {
+    try {
+      const { user } = req.session
+      const username = user.username
+
+      res.render('maintenance', {
+        data: {
+          username
+        }
+      }, (err, html) => {
+        if (err) throw new Error(err)
+        res.send(html)
+      })
+    } catch (error) {
+      next(new AppError(error, `[${this.constructor.name}] ${this.paymentsView.name}.`))
+    }
+  }
+
   generatePdf = async (req, res, next) => {
     try {
       console.time()

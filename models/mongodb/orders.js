@@ -1,5 +1,9 @@
 import { connectMongoDB } from '../../configuration/mongoConnections.js'
 import { MongoDBError } from '../../utils/errorTypes.js'
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat.js'
+
+dayjs.extend(customParseFormat)
 
 export class OrderModel {
   static async getAll () {
@@ -147,6 +151,35 @@ export class OrderModel {
       return orderDetails
     } catch (error) {
       throw new MongoDBError(error, 'Error getting order details.')
+    }
+  }
+
+  static async updateAllDates ({ qtyDate, stringDate }) {
+    try {
+      const collection = await connectMongoDB('orders')
+      const orders = await collection.find({}).toArray()
+      let totalUpdatedCount = 0
+      for (const order of orders) {
+        const updatedFields = {}
+        if (order.orderDate) {
+          updatedFields.orderDate = dayjs(order.orderDate).add(+qtyDate, stringDate).toDate()
+        }
+        if (order.requiredDate) {
+          updatedFields.requiredDate = dayjs(order.requiredDate).add(+qtyDate, stringDate).toDate()
+        }
+        if (order.pickUpDate) {
+          updatedFields.pickUpDate = dayjs(order.pickUpDate).add(+qtyDate, stringDate).toDate()
+        }
+        const updateResult = await collection.updateOne(
+          { _id: order._id },
+          { $set: updatedFields }
+        )
+        totalUpdatedCount += updateResult.modifiedCount
+      }
+
+      return totalUpdatedCount
+    } catch (error) {
+      throw new MongoDBError(error, 'Error updating orders.')
     }
   }
 }
