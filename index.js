@@ -32,7 +32,7 @@ import { checkToken } from './middleware/auth.js'
 if (process.env.ENV !== 'PRD') process.loadEnvFile()
 const port = process.env.APPPORT ?? 3000
 
-const app = express()
+export const app = express()
 app.use(json())
 app.use(cookieParser())
 app.use(corsMiddleware())

@@ -172,11 +172,12 @@ export class DashboardController {
       const { dataPaged, nextPage, prevPage, currentPage } = pagination(ordersComplete, req.query.page, 10)
       ordersComplete = dataPaged
 
-      const ordersDisplayInTable = ordersComplete.map(({ orderNumber, pickUpDate, paymentCheckNumber, pickUpOffice, orderDate, requiredDate, ...rest }) => ({
+      const ordersDisplayInTable = ordersComplete.map(({ orderNumber, pickUpDate, paymentCheckNumber, comments, pickUpOffice, orderDate, requiredDate, ...rest }) => ({
         id: orderNumber,
         orderNumber,
         orderDate: formatDate(orderDate),
         requiredDate: formatDate(requiredDate),
+        comments,
         ...rest
       }))
 

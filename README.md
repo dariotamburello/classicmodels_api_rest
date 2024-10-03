@@ -19,3 +19,4 @@ Pass: test123
 - Middleware to handle errors with custom errors for develop or to send to front
 - Middleware to pagination and searchs
 - Front end with EJS and EJS Templates
+- Tests e2e (Mocha) included for each route
