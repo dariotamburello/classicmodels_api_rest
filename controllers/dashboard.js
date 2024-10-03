@@ -44,8 +44,10 @@ export class DashboardController {
       const latestOrders = ordersComplete
         .sort((a, b) => b.orderNumber - a.orderNumber)
         .slice(0, 10)
-      const ordersDisplayInTable = latestOrders.map(({ orderNumber, orderDate, pickUpDate, paymentCheckNumber, pickUpOffice, comments, requiredDate, type, ...rest }) => ({
+      const ordersDisplayInTable = latestOrders.map(({ orderNumber, orderDate, customerName, pickUpDate, paymentCheckNumber, pickUpOffice, total, comments, requiredDate, type, ...rest }) => ({
         orderDate: formatDate(orderDate),
+        customerName,
+        total: formatPrice(total),
         ...rest
       }))
 
@@ -688,6 +690,9 @@ function formatDate (date) {
 }
 
 function formatPrice (value) {
+  if (typeof (value) === 'string') {
+    return `$${value}`
+  }
   return value.toLocaleString('en-US', {
     style: 'currency',
     currency: 'USD',
