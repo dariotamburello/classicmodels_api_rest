@@ -1,10 +1,8 @@
 import { Router } from 'express'
-import { DashboardController } from '../controllers/dashboard.js'
 import { checkToken } from '../middleware/auth.js'
 
-export const createDashboardRouter = () => {
+export const createDashboardRouter = (dashboardController) => {
   const dashboardRouter = new Router()
-  const dashboardController = new DashboardController()
 
   dashboardRouter.get('/', checkToken, dashboardController.dashboard)
   dashboardRouter.get('/products', checkToken, dashboardController.productsView)

@@ -84,7 +84,7 @@ app.use('/paymentstatus', createPaymentStatusRouter({ paymentStatusModel: dataMo
 app.use('/users', createUsersRouter({ usersModel: dataModels.UsersModel }))
 app.use('/auth', createAuthenticationRouter({ usersModel: dataModels.UsersModel }))
 app.use('/logs', createLogsRouter({ logsModel: dataModels.LogsModel }))
-app.use('/dashboard', createDashboardRouter())
+app.use('/dashboard', createDashboardRouter(dashboardController))
 app.use('/maintenance', createMaintenanceRouter())
 
 app.use(errorHandler)

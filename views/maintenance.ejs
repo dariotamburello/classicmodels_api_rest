@@ -60,7 +60,7 @@
                         Notiflix.Loading.remove()
                         if (!res.ok) return actions.displayResultMessage(false, `Can't update dates.`)
                         res.json().then(result => {
-                            actions.displayResultMessage(true, `Dates updated (${result})`)
+                            actions.displayResultMessage(true, `Dates updated (registers affected: ${result})`)
                         })
                     })
                 } catch (error) {
