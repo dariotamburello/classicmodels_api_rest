@@ -3,8 +3,9 @@ import cors from 'cors'
 const ACCEPTED_ORIGINS = [
   '*',
   'http://localhost:3000',
+  'http://localhost:5173',
+  'http://192.168.100.52:5173',
   'http://localhost:9900',
-  'http://192.168.100.52:3000',
   'http://76.76.21.164:443',
   'https://76.76.21.164:443',
   'https://classicmodels-api-rest.vercel.app'
