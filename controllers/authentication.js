@@ -10,7 +10,7 @@ import { globalSettings } from '../configuration/globalSettings.js'
 import { userActive } from '../constants/userActive.js'
 
 export class AuthenticationController {
-  constructor ({ usersModel }) {
+  constructor({ usersModel }) {
     this.usersModel = usersModel
   }
 
@@ -42,7 +42,8 @@ export class AuthenticationController {
           username: userFound.username,
           usertype: userFound.usertype,
           registerAt: userFound.registerAt,
-          lastLogin: userFound.lastLogin
+          lastLogin: userFound.lastLogin,
+          token
         })
     } catch (error) {
       return next(error)
